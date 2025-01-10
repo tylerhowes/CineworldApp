@@ -2,12 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navOACFloor"
-        android:title="OAC Floor" />
+        android:id="@+id/navGeneral"
+        android:title="General" />
 
     <item
         android:id="@+id/navOACConcessions"
-        android:title="OAC Concessions" />
+        android:title="OAC Concessions" >
+
+    </item>
 
     <item
         android:id="@+id/navlogout"
