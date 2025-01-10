@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navOACFloor"
+        android:title="OAC Floor" />
+
+    <item
+        android:id="@+id/navOACConcessions"
+        android:title="OAC Concessions" />
+
+    <item
+        android:id="@+id/navlogout"
+        android:title="Daily Concessions" />
+
+    <item
+        android:id="@+id/navDailyFloor"
+        android:title="Daily Floor" />
+
+    <item
+        android:id="@+id/navDailyConcessions"
+        android:title="Daily Concessions" />
+
+</menu>

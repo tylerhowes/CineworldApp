@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "131752728855",
+    "project_id": "cineworldapp-1f55b",
+    "storage_bucket": "cineworldapp-1f55b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:131752728855:android:f6e86342fa97d89f48ff52",
+        "android_client_info": {
+          "package_name": "com.example.cineworldapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYKwTqPhJvC8bD_sTVutj__pA0yDZtY48"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
