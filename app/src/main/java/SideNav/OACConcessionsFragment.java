@@ -1,4 +1,4 @@
-package com.example.cineworldapp;
+package SideNav;
 
 import android.os.Bundle;
 
@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.cineworldapp.R;
 
 
 public class OACConcessionsFragment extends Fragment {

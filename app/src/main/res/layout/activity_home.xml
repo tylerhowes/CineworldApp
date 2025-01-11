@@ -19,7 +19,11 @@
             android:background="@color/red"
             android:id="@+id/toolbar"
             android:elevation="4dp"
-            android:titleTextColor="@color/white"/>
+            android:titleTextColor="@color/white"
+            app:title="Cineworld"
+            app:titleTextColor="@color/white"
+
+            />
 
         <FrameLayout
             android:layout_width="match_parent"
