@@ -1,0 +1,48 @@
+package DailyConcessionsSideNav;
+
+import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.example.cineworldapp.R;
+import com.example.cineworldapp.ViewPagerAdapter;
+import com.google.android.material.tabs.TabLayout;
+
+import DailyConcessionsSideNav.DailyConcessionsSubFragments.DailyConcessionsEquipmentSanitisationFragment;
+import DailyConcessionsSideNav.DailyConcessionsSubFragments.DailyConcessionsFreezerChecksFragment;
+import DailyConcessionsSideNav.DailyConcessionsSubFragments.DailyConcessionsHotDogControlFragment;
+import DailyConcessionsSideNav.DailyConcessionsSubFragments.DailyConcessionsTillSanitisationFragment;
+
+public class DailyConcessionsFragment extends Fragment {
+
+    ViewPager viewPager;
+    ViewPagerAdapter viewPagerAdapter;
+    TabLayout tabLayout;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_daily_concessions, container, false);
+
+        viewPager = view.findViewById(R.id.pager);
+        viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
+
+        viewPagerAdapter.add(new DailyConcessionsHotDogControlFragment(), "Hot Dog Control");
+        viewPagerAdapter.add(new DailyConcessionsEquipmentSanitisationFragment(), "Equipment Sanitisation");
+        viewPagerAdapter.add(new DailyConcessionsTillSanitisationFragment(), "Till Sanitisation");
+        viewPagerAdapter.add(new DailyConcessionsFreezerChecksFragment(), "Freezer Checks");
+
+        viewPager.setAdapter(viewPagerAdapter);
+        tabLayout = view.findViewById(R.id.tabLayout);
+        tabLayout.setupWithViewPager(viewPager);
+
+
+        // Inflate the layout for this fragment
+        return view;
+    }
+}

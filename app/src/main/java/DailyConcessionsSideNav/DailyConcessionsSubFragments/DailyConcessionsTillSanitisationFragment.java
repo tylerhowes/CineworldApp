@@ -1,4 +1,4 @@
-package SideNav;
+package DailyConcessionsSideNav.DailyConcessionsSubFragments;
 
 import android.os.Bundle;
 
@@ -11,15 +11,20 @@ import android.view.ViewGroup;
 import com.example.cineworldapp.R;
 
 
-public class DailyFloorFragment extends Fragment {
+public class DailyConcessionsTillSanitisationFragment extends Fragment {
+
+
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
-
-
-        return inflater.inflate(R.layout.fragment_daily_floor, container, false);
+        return inflater.inflate(R.layout.fragment_daily_concessions_till_sanitisation, container, false);
     }
 }

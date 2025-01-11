@@ -1,4 +1,4 @@
-package com.example.cineworldapp;
+package DailyFloorSideNav.DailyFloorSubFragments;
 
 import android.os.Bundle;
 
@@ -8,18 +8,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.cineworldapp.R;
 
-public class ClosingChecksFragment extends Fragment {
+
+public class CinemaSafetyAndSecurityFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_closing_checks, container, false);
+        return inflater.inflate(R.layout.fragment_daily_floor_cinema_safety_and_security, container, false);
     }
 }

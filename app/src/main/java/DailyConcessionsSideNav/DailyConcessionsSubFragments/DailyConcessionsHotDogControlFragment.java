@@ -1,4 +1,4 @@
-package com.example.cineworldapp;
+package DailyConcessionsSideNav.DailyConcessionsSubFragments;
 
 import android.os.Bundle;
 
@@ -8,7 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class FloorOpeningChecksFragment extends Fragment {
+import com.example.cineworldapp.R;
+
+
+public class DailyConcessionsHotDogControlFragment extends Fragment {
 
 
 
@@ -22,6 +25,6 @@ public class FloorOpeningChecksFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_opening_checks, container, false);
+        return inflater.inflate(R.layout.fragment_daily_concessions_hot_dog_control, container, false);
     }
 }

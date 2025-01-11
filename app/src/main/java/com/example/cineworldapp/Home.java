@@ -13,10 +13,10 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.material.navigation.NavigationView;
 
-import SideNav.DailyConcessionsFragment;
-import SideNav.DailyFloorFragment;
-import SideNav.OACConcessionsFragment;
-import SideNav.OACFloorFragment;
+import DailyConcessionsSideNav.DailyConcessionsFragment;
+import DailyFloorSideNav.DailyFloorFragment;
+import OACConcessionsSideNav.OACConcessionsFragment;
+import OACFloorSideNav.OACFloorFragment;
 import SideNav.generalFragment;
 
 public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{

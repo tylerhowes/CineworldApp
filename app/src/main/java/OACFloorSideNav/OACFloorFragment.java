@@ -1,4 +1,4 @@
-package SideNav;
+package OACFloorSideNav;
 
 import android.os.Bundle;
 
@@ -9,10 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.cineworldapp.ClosingChecksFragment;
-import com.example.cineworldapp.CustomerAssistanceFragment;
-import com.example.cineworldapp.FloorDailyDutiesFragment;
-import com.example.cineworldapp.FloorOpeningChecksFragment;
+import OACFloorSideNav.OACFloorSubFragments.FloorClosingChecksFragment;
+import OACFloorSideNav.OACFloorSubFragments.CustomerAssistanceFragment;
+import OACFloorSideNav.OACFloorSubFragments.FloorDailyDutiesFragment;
+import OACFloorSideNav.OACFloorSubFragments.FloorOpeningChecksFragment;
 import com.example.cineworldapp.R;
 import com.example.cineworldapp.ViewPagerAdapter;
 import com.google.android.material.tabs.TabLayout;
@@ -31,11 +31,11 @@ public class OACFloorFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_oac_floor, container, false);
         viewPager = view.findViewById(R.id.pager);
 
-        viewPagerAdapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
+        viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
 
-        viewPagerAdapter.add(new FloorDailyDutiesFragment(), "Daily Floor");
         viewPagerAdapter.add(new FloorOpeningChecksFragment(), "Opening Checks");
-        viewPagerAdapter.add(new ClosingChecksFragment(), "Closing Checks");
+        viewPagerAdapter.add(new FloorDailyDutiesFragment(), "Daily Floor");
+        viewPagerAdapter.add(new FloorClosingChecksFragment(), "Closing Checks");
         viewPagerAdapter.add(new CustomerAssistanceFragment(), "Customer Assistance Log");
 
         viewPager.setAdapter(viewPagerAdapter);
