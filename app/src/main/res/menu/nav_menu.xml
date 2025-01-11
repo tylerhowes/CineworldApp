@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn = "navigation_view">
+    <group
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_general"
+            android:title="General"/>
+        <item
+            android:id="@+id/nav_oac_concessions"
+            android:title="OAC Concessions"/>
+        <item
+            android:id="@+id/nav_daily_concessions"
+            android:title="Daily Concessions"/>
+        <item
+            android:id="@+id/nav_oac_floor"
+            android:title="OAC Floor"/>
+        <item
+            android:id="@+id/nav_daily_floor"
+            android:title="Daily Floor"/>
+    </group>
+</menu>
