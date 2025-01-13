@@ -203,7 +203,7 @@ public class ToiletCheckFragment extends Fragment {
         long timeLeft = savedTime - timeSincePause;
 
         if(timeLeft > 0){
-            countDownTimer = new CountDownTimer(timeLeft ,1000 ){
+            countDownTimer = new CountDownTimer(timeLeft ,3600000 ){
                 public void onTick(long millisUntilFinished){
                     NumberFormat format = new DecimalFormat("00");
                     timerText.setText("" + millisUntilFinished / 1000);

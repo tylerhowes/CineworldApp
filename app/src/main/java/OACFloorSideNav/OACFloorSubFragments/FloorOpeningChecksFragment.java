@@ -20,7 +20,6 @@ import java.util.Map;
 
 public class FloorOpeningChecksFragment extends Fragment {
 
-
     FirebaseAuth auth;
     FirebaseFirestore db;
     String userInitials;

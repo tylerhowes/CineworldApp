@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
@@ -20,6 +22,9 @@ public class ScreenCardAdapter extends RecyclerView.Adapter<ScreenCardAdapter.Vi
 
     private final Context context;
     private final ArrayList<ScreenCardModel> screenCardModelArrayList;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseAuth auth = FirebaseAuth.getInstance();
+    String userInitials;
 
     public ScreenCardAdapter(Context context, ArrayList<ScreenCardModel> screenCardModelArrayList) {
         this.context = context;
@@ -42,6 +47,16 @@ public class ScreenCardAdapter extends RecyclerView.Adapter<ScreenCardAdapter.Vi
         holder.featureTime.setText(screenCardModel.getFeatureTime());
         holder.finishTime.setText(screenCardModel.getFinishTime());
 
+
+        auth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+        String UID = auth.getCurrentUser().getUid();
+
+        db.collection("users").document(UID).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    userInitials =  documentSnapshot.getString("initials");
+                });
+
         holder.check1Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,6 +75,7 @@ public class ScreenCardAdapter extends RecyclerView.Adapter<ScreenCardAdapter.Vi
                     public void onClick(View v) {
                         holder.check1Button.setBackgroundColor(context.getResources().getColor(R.color.green));
                         popupWindow.dismiss();
+                        holder.check1Initials.setText(userInitials);
                         //Add code to save completed check in firebase
                     }
                 });
@@ -93,7 +109,7 @@ public class ScreenCardAdapter extends RecyclerView.Adapter<ScreenCardAdapter.Vi
                     public void onClick(View v) {
                         holder.check2Button.setBackgroundColor(context.getResources().getColor(R.color.green));
                         popupWindow.dismiss();
-
+                        holder.check2Initials.setText(userInitials);
                         //Add code to save completed check in firebase
                     }
                 });
@@ -126,6 +142,7 @@ public class ScreenCardAdapter extends RecyclerView.Adapter<ScreenCardAdapter.Vi
                     public void onClick(View v) {
                         holder.check3Button.setBackgroundColor(context.getResources().getColor(R.color.green));
                         popupWindow.dismiss();
+                        holder.check3Initials.setText(userInitials);
 
                         //Add code to save completed check in firebase
                     }
@@ -158,6 +175,10 @@ public class ScreenCardAdapter extends RecyclerView.Adapter<ScreenCardAdapter.Vi
         private final Button check2Button;
         private final Button check3Button;
 
+        private final TextView check1Initials;
+        private final TextView check2Initials;
+        private final TextView check3Initials;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             screen = itemView.findViewById(R.id.screenNumber);
@@ -168,6 +189,9 @@ public class ScreenCardAdapter extends RecyclerView.Adapter<ScreenCardAdapter.Vi
             check1Button = itemView.findViewById(R.id.check1);
             check2Button = itemView.findViewById(R.id.check2);
             check3Button = itemView.findViewById(R.id.check3);
+            check1Initials = itemView.findViewById(R.id.check1Initials);
+            check2Initials = itemView.findViewById(R.id.check2Initials);
+            check3Initials = itemView.findViewById(R.id.check3Initials);
         }
     }
 }

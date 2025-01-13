@@ -320,6 +320,15 @@
                 android:background="@drawable/box_border" />
 
         </LinearLayout>
+
+        <Button
+            android:id="@+id/buttonTeamLeaderSignOff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Team Leader Sign Off"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/red"
+            android:layout_marginTop="20dp"/>
     </LinearLayout>
 
 </FrameLayout>
