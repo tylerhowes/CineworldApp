@@ -1,6 +1,9 @@
 package com.example.cineworldapp;
 
-public class ToiletCheckDataModel {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class ToiletCheckDataModel implements Parcelable {
 
     String toiletCheckNumber;
     String toiletCheckTime;
@@ -36,4 +39,32 @@ public class ToiletCheckDataModel {
         this.staffInitials = staffInitials;
     }
 
+    // Parcelable implementation
+    protected ToiletCheckDataModel(Parcel in) {
+        toiletCheckNumber = in.readString();
+        toiletCheckTime = in.readString();
+        staffInitials = in.readString();
+    }
+
+    public static final Creator<ToiletCheckDataModel> CREATOR = new Creator<ToiletCheckDataModel>() {
+        @Override
+        public ToiletCheckDataModel createFromParcel(Parcel in) {
+            return new ToiletCheckDataModel(in);
+        }
+
+        @Override
+        public ToiletCheckDataModel[] newArray(int size) {
+            return new ToiletCheckDataModel[size];
+        }
+    };
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(toiletCheckNumber);
+        dest.writeString(toiletCheckTime);
+        dest.writeString(staffInitials);
+    }
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 }
