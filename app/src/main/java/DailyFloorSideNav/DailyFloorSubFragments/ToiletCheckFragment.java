@@ -33,6 +33,7 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -84,8 +85,8 @@ public class ToiletCheckFragment extends Fragment {
 
 
 
-        //Log.d("ToiletCheckFragment", "On View Created Called");
-        //Log.d("ToiletCheckFragment", "Size of Check Array in onCreateView: " + toiletCheckDataList.size());
+        Log.d("ToiletCheckFragment", "On View Created Called");
+        Log.d("ToiletCheckFragment", "Size of Check Array in onCreateView: " + toiletCheckDataList.size());
 
         timerText = getView().findViewById(R.id.timer);
         ResumeCountDown();
@@ -101,7 +102,11 @@ public class ToiletCheckFragment extends Fragment {
                 String disabledData = result.getString("disabledData");
                 Log.d("ToiletCheckFragment", "Mens: " + mensData + " Womens: " + womensData + " Disabled: " + disabledData);
 
-                toiletCheckDataList.add(new ToiletCheckDataModel(""+ (toiletCheckDataList.size()+1), "13:30", "TH"));
+                long currentTime = System.currentTimeMillis();
+                SimpleDateFormat format= new SimpleDateFormat("HH:mm");
+                String actualTime = format.format(currentTime);
+
+                toiletCheckDataList.add(new ToiletCheckDataModel(""+ (toiletCheckDataList.size()+1), actualTime, "TH"));
                 Log.d("ToiletCheckFragment", "Size of Array in onFrag result: " + toiletCheckDataList.size());
 
                 adapter.notifyItemInserted(toiletCheckDataList.size() - 1);
