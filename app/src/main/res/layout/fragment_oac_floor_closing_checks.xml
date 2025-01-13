@@ -5,10 +5,347 @@
     android:layout_height="match_parent"
     tools:context="OACFloorSideNav.OACFloorSubFragments.FloorClosingChecksFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Closing Checks Fragment" />
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox android:id="@+id/checkboxSluiceRoom"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text="Sluice room is clean and tidy, all mop bukcets and pickups have been emptied" />
+
+            <TextView
+                android:id="@+id/checkboxSluiceRoomInitials"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="..."
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/box_border" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox android:id="@+id/checkboxFireExits"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text="All fire exits are closed and secure" />
+
+            <TextView
+                android:id="@+id/checkboxFireExitsInitials"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="..."
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/box_border" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox android:id="@+id/checkboxBins"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text="All foyer and corridor bins are emptied, and all rubbish taken to Service Yard" />
+
+            <TextView
+                android:id="@+id/checkboxBinsInitials"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="..."
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/box_border" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox android:id="@+id/checkboxNoCustomers"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text="All toilets and screens have been checked and are clear of customers"/>
+
+            <TextView
+                android:id="@+id/checkboxNoCustomersInitials"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="..."
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/box_border" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox android:id="@+id/checkboxRadiosReturned"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text="All radios have been returned"/>
+
+            <TextView
+                android:id="@+id/checkboxRadiosReturnedInitials"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="..."
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/box_border" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox android:id="@+id/checkboxCleanSreens"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text="All big rubbish has been removed from the screens"/>
+
+            <TextView
+                android:id="@+id/checkboxCleanSreensInitials"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="..."
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/box_border" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox android:id="@+id/checkboxFoyerTidy"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text="Foyer is kept tidy for all customers leaving the building"/>
+
+            <TextView
+                android:id="@+id/checkboxFoyerTidyInitials"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="..."
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/box_border" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox android:id="@+id/checkboxCleaningTrolley"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text="Cleaning trolley is clean and stocked for the next business day"/>
+
+            <TextView
+                android:id="@+id/checkboxCleaningTrolleyInitials"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="..."
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/box_border" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox android:id="@+id/checkboxLightsOff"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text="All screens and foyer lighting is turned off"/>
+
+            <TextView
+                android:id="@+id/checkboxLightsOffInitials"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="..."
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/box_border" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox android:id="@+id/checkboxTraps"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text="All toilets are stocked, and 1 litre of hot water poured down all floor traps"/>
+
+            <TextView
+                android:id="@+id/checkboxTrapsInitials"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="..."
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/box_border" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox android:id="@+id/checkboxLostProperty"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text="All lost property items have been taken to store room and recorded"/>
+
+            <TextView
+                android:id="@+id/checkboxLostPropertyInitials"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="..."
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/box_border" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox android:id="@+id/checkboxLockerRooms"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text="Locker rooms are clean and tidy"/>
+
+            <TextView
+                android:id="@+id/checkboxLockerRoomsInitials"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="..."
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/box_border" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox android:id="@+id/checkboxStaffRoom"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text="Staff room is clean and tidy"/>
+
+            <TextView
+                android:id="@+id/checkboxStaffRoomInitials"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="..."
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/box_border" />
+
+        </LinearLayout>
+    </LinearLayout>
 
 </FrameLayout>
