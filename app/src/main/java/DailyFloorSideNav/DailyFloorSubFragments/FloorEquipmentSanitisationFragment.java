@@ -70,11 +70,11 @@ public class FloorEquipmentSanitisationFragment extends Fragment {
 
 
         floorEquipmentSanitisationList = new ArrayList<>();
-        floorEquipmentSanitisationList.add(new FloorEquipmentSanitisationModel(false, "...", checkTimeList.get(0), "areasToSanitise"));
-        floorEquipmentSanitisationList.add(new FloorEquipmentSanitisationModel(false, "...", checkTimeList.get(1), "areasToSanitise"));
-        floorEquipmentSanitisationList.add(new FloorEquipmentSanitisationModel(false, "...", checkTimeList.get(2), "areasToSanitise"));
-        floorEquipmentSanitisationList.add(new FloorEquipmentSanitisationModel(false, "...", checkTimeList.get(3), "areasToSanitise"));
-        floorEquipmentSanitisationList.add(new FloorEquipmentSanitisationModel(false, "...", checkTimeList.get(4), "areasToSanitise"));
+        floorEquipmentSanitisationList.add(new FloorEquipmentSanitisationModel(false, "...", checkTimeList.get(0), areasToSanitise));
+        floorEquipmentSanitisationList.add(new FloorEquipmentSanitisationModel(false, "...", checkTimeList.get(1), areasToSanitise));
+        floorEquipmentSanitisationList.add(new FloorEquipmentSanitisationModel(false, "...", checkTimeList.get(2), areasToSanitise));
+        floorEquipmentSanitisationList.add(new FloorEquipmentSanitisationModel(false, "...", checkTimeList.get(3), areasToSanitise));
+        floorEquipmentSanitisationList.add(new FloorEquipmentSanitisationModel(false, "...", checkTimeList.get(4), areasToSanitise));
 
 
         floorEquipmentSanitisationAdapter = new FloorEquipmentSanitisationAdapter(getContext(), floorEquipmentSanitisationList);

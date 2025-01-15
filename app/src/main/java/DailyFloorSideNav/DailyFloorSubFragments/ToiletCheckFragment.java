@@ -116,15 +116,12 @@ public class ToiletCheckFragment extends Fragment {
             }
         });
 
-
-
         RecyclerView recyclerView = getView().findViewById(R.id.toiletCheckRecyclerView);
         adapter = new ToiletCheckCardAdapter(getContext(), toiletCheckDataList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
 
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter);
-
 
         Button newCheck = getView().findViewById(R.id.newCheckButton);
         newCheck.setOnClickListener(new View.OnClickListener() {
@@ -172,13 +169,11 @@ public class ToiletCheckFragment extends Fragment {
         editor.apply();
     }
 
-
-
     public void StartCountDownTimer(){
         if(countDownTimer != null){
             countDownTimer.cancel();
         }
-        countDownTimer= new CountDownTimer(100000, 1000){
+        countDownTimer= new CountDownTimer(3600000, 1000){
             public void onTick(long millisUntilFinished){
                 NumberFormat format = new DecimalFormat("00");
                 timerText.setText("" + millisUntilFinished / 1000);
