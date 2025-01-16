@@ -133,11 +133,9 @@ public class ToiletCheckFragment extends Fragment {
                 fragTransaction.add(R.id.dailyFloorFragment, new ToiletCheckCompletionFragment());
                 fragTransaction.addToBackStack(null);
                 fragTransaction.commit();
-
             }
         });
     }
-
 
     @Override
     public void onPause() {
