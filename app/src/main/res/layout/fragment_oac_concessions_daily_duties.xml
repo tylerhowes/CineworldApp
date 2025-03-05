@@ -1,13 +1,803 @@
+<?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="OACConcessionsSideNav.OACConcessionsSubFragments.OACConcessionsDailyDuties">
+    tools:context="OACFloorSideNav.OACFloorSubFragments.FloorOpeningChecksFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <!-- Add ScrollView here -->
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Concessions Daily Duties" />
+        android:layout_height="match_parent">
 
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- Sanitise phone and light switches -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox android:id="@+id/checkboxSanitisePhoneLightSwitches"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:text="Sanitise phone and light switches" />
+
+                <TextView
+                    android:id="@+id/checkboxSanitisePhoneLightSwitchesInitials"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="..."
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/box_border" />
+
+            </LinearLayout>
+
+            <!-- Rotate stock in stock rooms and remove out of date items -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox android:id="@+id/checkboxRotateStockRooms"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:text="Rotate stock in stock rooms and remove out of date items" />
+
+                <TextView
+                    android:id="@+id/checkboxRotateStockRoomsInitials"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="..."
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/box_border" />
+
+            </LinearLayout>
+
+            <!-- Rotate stock in fridges and on the sweet rack, removing any out of date items -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox android:id="@+id/checkboxRotateFridgesSweetRack"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:text="Rotate stock in fridges and on the sweet rack, removing any out of date items" />
+
+                <TextView
+                    android:id="@+id/checkboxRotateFridgesSweetRackInitials"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="..."
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/box_border" />
+
+            </LinearLayout>
+
+            <!-- Check sell by dates of all cupboard stock, removing any out of date items -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox android:id="@+id/checkboxCheckCupboardStock"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:text="Check sell by dates of all cupboard stock, removing any out of date items" />
+
+                <TextView
+                    android:id="@+id/checkboxCheckCupboardStockInitials"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="..."
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/box_border" />
+
+            </LinearLayout>
+
+            <!-- Sugar/stirrer holder has been wiped down -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox android:id="@+id/checkboxSugarStirrerHolderWiped"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:text="Sugar/stirrer holder has been wiped down" />
+
+                <TextView
+                    android:id="@+id/checkboxSugarStirrerHolderWipedInitials"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="..."
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/box_border" />
+
+            </LinearLayout>
+
+            <!-- Lavazza syrup pumps have been cleaned through and bottles are clean -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox android:id="@+id/checkboxLavazzaSyrupPumpsCleaned"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:text="Lavazza syrup pumps have been cleaned through and bottles are clean" />
+
+                <TextView
+                    android:id="@+id/checkboxLavazzaSyrupPumpsCleanedInitials"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="..."
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/box_border" />
+
+            </LinearLayout>
+
+            <!-- Cocoa sprinkler has been emptied and cleaned -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox android:id="@+id/checkboxCocoaSprinklerCleaned"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:text="Cocoa sprinkler has been emptied and cleaned" />
+
+                <TextView
+                    android:id="@+id/checkboxCocoaSprinklerCleanedInitials"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="..."
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/box_border" />
+
+            </LinearLayout>
+
+            <!-- All back counter equipment, including display items, have been dusted on top -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox android:id="@+id/checkboxBackCounterEquipmentDusted"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:text="All back counter equipment, including display items, have been dusted on top" />
+
+                <TextView
+                    android:id="@+id/checkboxBackCounterEquipmentDustedInitials"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="..."
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/box_border" />
+
+            </LinearLayout>
+
+            <!-- Ensure extra munchboxes are made up for M4J -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox android:id="@+id/checkboxExtraMunchboxesMade"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:text="Ensure extra munchboxes are made up for M4J" />
+
+                <TextView
+                    android:id="@+id/checkboxExtraMunchboxesMadeInitials"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="..."
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/box_border" />
+
+            </LinearLayout>
+
+            <!-- Pull out fridges and freezers in the back, sweep and mop behind -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox android:id="@+id/checkboxPullOutFridgesFreezers"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:text="Pull out fridges and freezers in the back, sweep and mop behind" />
+
+                <TextView
+                    android:id="@+id/checkboxPullOutFridgesFreezersInitials"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="..."
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/box_border" />
+
+            </LinearLayout>
+
+            <!-- Soap dispensers have been deep cleaned and spring checked -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox android:id="@+id/checkboxSoapDispensersDeepCleaned"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:text="Soap dispensers have been deep cleaned and spring checked" />
+
+                <TextView
+                    android:id="@+id/checkboxSoapDispensersDeepCleanedInitials"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="..."
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/box_border" />
+
+            </LinearLayout>
+
+            <!-- Sweet racks have stock removed and rack fully wiped down -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox android:id="@+id/checkboxSweetRacksWiped"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:text="Sweet racks have stock removed and rack fully wiped down" />
+
+                <TextView
+                    android:id="@+id/checkboxSweetRacksWipedInitials"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="..."
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/box_border" />
+
+            </LinearLayout>
+
+            <!-- Move and sweep under sweet racks -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox android:id="@+id/checkboxMoveSweepSweetRacks"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:text="Move and sweep under sweet racks" />
+
+                <TextView
+                    android:id="@+id/checkboxMoveSweepSweetRacksInitials"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="..."
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/box_border" />
+
+            </LinearLayout>
+
+            <!-- Tills deep cleaned including till poles, PinPad, and screens -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox android:id="@+id/checkboxTillsDeepCleaned"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:text="Tills deep cleaned including till poles, PinPad, and screens" />
+
+                <TextView
+                    android:id="@+id/checkboxTillsDeepCleanedInitials"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="..."
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/box_border" />
+
+            </LinearLayout>
+
+            <!-- Coffee machine is fully cleaned including on top of the machine and underneath -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox android:id="@+id/checkboxCoffeeMachineCleaned"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:text="Coffee machine is fully cleaned including on top of the machine and underneath" />
+
+                <TextView
+                    android:id="@+id/checkboxCoffeeMachineCleanedInitials"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="..."
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/box_border" />
+
+            </LinearLayout>
+
+            <!-- Items under back sink have been tidied and organised -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox android:id="@+id/checkboxItemsUnderSinkTidied"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:text="Items under back sink have been tidied and organised" />
+
+                <TextView
+                    android:id="@+id/checkboxItemsUnderSinkTidiedInitials"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="..."
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/box_border" />
+            </LinearLayout>
+
+            <!-- Dust high level POS and duratans -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox android:id="@+id/checkboxDustHighLevelPOS"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:text="Dust high level POS and duratans" />
+
+                <TextView
+                    android:id="@+id/checkboxDustHighLevelPOSInitials"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="..."
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/box_border" />
+
+            </LinearLayout>
+
+            <!-- All cupboards under the tills have been emptied and cleaned -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox android:id="@+id/checkboxCupboardsUnderTillsCleaned"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:text="All cupboards under the tills have been emptied and cleaned" />
+
+                <TextView
+                    android:id="@+id/checkboxCupboardsUnderTillsCleanedInitials"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="..."
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/box_border" />
+
+            </LinearLayout>
+
+            <!-- Clean and sanitise front sinks, cupboard underneath cleaned and organised -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox android:id="@+id/checkboxFrontSinksCleaned"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:text="Clean and sanitise front sinks, cupboard underneath cleaned and organised" />
+
+                <TextView
+                    android:id="@+id/checkboxFrontSinksCleanedInitials"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="..."
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/box_border" />
+
+            </LinearLayout>
+
+            <!-- All glass has been polished, including display cabinets and fridges -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox android:id="@+id/checkboxGlassPolished"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:text="All glass has been polished, including display cabinets and fridges" />
+
+                <TextView
+                    android:id="@+id/checkboxGlassPolishedInitials"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="..."
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/box_border" />
+
+            </LinearLayout>
+
+            <!-- Syrup racking has been wiped down, including trays, connectors, and tubes -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox android:id="@+id/checkboxSyrupRackingWiped"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:text="Syrup racking has been wiped down, including trays, connectors, and tubes" />
+
+                <TextView
+                    android:id="@+id/checkboxSyrupRackingWipedInitials"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="..."
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/box_border" />
+
+            </LinearLayout>
+
+            <!-- All cupboards have had inside and doors cleaned and sanitised -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox android:id="@+id/checkboxCupboardsCleanedSanitised"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:text="All cupboards have had inside and doors cleaned and sanitised" />
+
+                <TextView
+                    android:id="@+id/checkboxCupboardsCleanedSanitisedInitials"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="..."
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/box_border" />
+
+            </LinearLayout>
+
+            <!-- Lid holders and popcorn bag holders have been emptied, cleaned, and refilled -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox android:id="@+id/checkboxLidPopcornHoldersCleaned"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:text="Lid holders and popcorn bag holders have been emptied, cleaned, and refilled" />
+
+                <TextView
+                    android:id="@+id/checkboxLidPopcornHoldersCleanedInitials"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="..."
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/box_border" />
+
+            </LinearLayout>
+
+            <!-- All fridges emptied and cleaned -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox android:id="@+id/checkboxFridgesEmptiedCleaned"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:text="All fridges emptied and cleaned" />
+
+                <TextView
+                    android:id="@+id/checkboxFridgesEmptiedCleanedInitials"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="..."
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/box_border" />
+
+            </LinearLayout>
+
+            <!-- Ice machine turned off, deep cleaned, and signed for -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox android:id="@+id/checkboxIceMachineCleaned"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:text="Ice machine turned off, deep cleaned, and signed for" />
+
+                <TextView
+                    android:id="@+id/checkboxIceMachineCleanedInitials"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="..."
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/box_border" />
+
+            </LinearLayout>
+
+            <!-- Ice bins pulled out and deep cleaned -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox android:id="@+id/checkboxIceBinsDeepCleaned"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:text="Ice bins pulled out and deep cleaned" />
+
+                <TextView
+                    android:id="@+id/checkboxIceBinsDeepCleanedInitials"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="..."
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/box_border" />
+
+            </LinearLayout>
+
+            <!-- Kick plates removed and wiped down, area underneath swept and mopped -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox android:id="@+id/checkboxKickPlatesWiped"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:text="Kick plates removed and wiped down, area underneath swept and mopped" />
+
+                <TextView
+                    android:id="@+id/checkboxKickPlatesWipedInitials"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="..."
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/box_border" />
+
+            </LinearLayout>
+
+            <!-- All storage freezers checked for ice build up, and defrosted as required -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox android:id="@+id/checkboxStorageFreezersDefrosted"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="10"
+                    android:text="All storage freezers checked for ice build up, and defrosted as required" />
+
+                <TextView
+                    android:id="@+id/checkboxStorageFreezersDefrostedInitials"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="..."
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/box_border" />
+
+            </LinearLayout>
+
+            <!-- Team Leader Sign Off Section -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Team Leader Signed off: "
+                    android:layout_gravity="center"
+                    android:textSize="20sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="..."
+                    android:id="@+id/teamLeaderInitials"
+                    android:textSize="20sp"/>
+            </LinearLayout>
+            <Button
+                android:id="@+id/buttonTeamLeaderSignOff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Team Leader Sign Off"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/red"
+                android:layout_marginTop="20dp"/>
+        </LinearLayout>
+    </ScrollView>
 </FrameLayout>

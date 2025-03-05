@@ -5,10 +5,19 @@
     android:layout_height="match_parent"
     tools:context="OACFloorSideNav.OACFloorSubFragments.CustomerAssistanceFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <Button
+        android:id="@+id/addLogButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Log"
+        android:backgroundTint="@color/red"
+        android:layout_gravity="center|top"
+        android:layout_marginTop="40dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycleView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Customer Assistance Fragment" />
+        android:layout_marginTop="125dp"/>
 
 </FrameLayout>

@@ -1,11 +1,16 @@
 package com.example.cineworldapp;
 
+import static java.security.AccessController.getContext;
+
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,11 +23,14 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.io.File;
+
 
 public class MainActivity extends AppCompatActivity {
 
     Button signUpButton;
     Button loginButton;
+    Button resetButton;
     EditText loginCodeInputView;
 
     FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -67,6 +75,8 @@ public class MainActivity extends AppCompatActivity {
                                                    if(user != null){
                                                        Log.d("Login", "Logged in as: " + user.getEmail());
                                                        startActivity(loginIntent);
+                                                       finish();
+
                                                    }
                                                    else {
                                                        Log.e("Login", "Error: " + authTask.getException());
@@ -80,6 +90,30 @@ public class MainActivity extends AppCompatActivity {
                             });
 
                 }
+            });
+
+            resetButton = findViewById(R.id.clearPreferencesButton);
+            resetButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // Get the directory where shared preferences are stored
+                    File sharedPrefsDir = new File(getApplicationContext().getFilesDir().getParent() + "/shared_prefs/");
+
+                    if (sharedPrefsDir.exists() && sharedPrefsDir.isDirectory()) {
+                        // Loop through all shared preferences files and delete them
+                        for (File file : sharedPrefsDir.listFiles()) {
+                            if (file.delete()) {
+                                Log.d("ClearPrefs", "Deleted: " + file.getName());
+                            } else {
+                                Log.e("ClearPrefs", "Failed to delete: " + file.getName());
+                            }
+                        }
+                        Toast.makeText(MainActivity.this, "All Shared Preferences Cleared", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Log.e("ClearPrefs", "Shared preferences directory does not exist");
+                    }
+                }
+
             });
 
             return insets;
