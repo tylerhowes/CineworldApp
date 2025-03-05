@@ -1,19 +1,28 @@
 package OACFloorSideNav.OACFloorSubFragments;
 
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.cineworldapp.R;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +35,8 @@ public class FloorClosingChecksFragment extends Fragment {
     FirebaseAuth auth;
     FirebaseFirestore db;
     String userInitials;
+    TextView teamLeaderInitalsTV;
+    String teamLeaderPasscode;
 
     int[] checkboxIds = {
             R.id.checkboxSluiceRoom,
@@ -38,7 +49,9 @@ public class FloorClosingChecksFragment extends Fragment {
             R.id.checkboxCleaningTrolley,
             R.id.checkboxLightsOff,
             R.id.checkboxTraps,
-            R.id.checkboxLostProperty
+            R.id.checkboxLostProperty,
+            R.id.checkboxLockerRooms,
+            R.id.checkboxStaffRoom
     };
 
     Map<Integer, Boolean> checkboxStates;
@@ -112,6 +125,53 @@ public class FloorClosingChecksFragment extends Fragment {
                 });
             }
         }
+
+        teamLeaderInitalsTV = view.findViewById(R.id.teamLeaderInitials);
+        Button teamLeaderSignOff = view.findViewById(R.id.buttonTeamLeaderSignOff);
+        teamLeaderSignOff.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("Team Leader Passcode");
+
+
+                // Set up the input
+                final EditText input = new EditText(getActivity());
+                // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+                input.setInputType(InputType.TYPE_CLASS_NUMBER);
+                builder.setView(input);
+
+                // Set up the buttons
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        teamLeaderPasscode = input.getText().toString();
+
+                        db.collection("users").whereEqualTo("loginCode", teamLeaderPasscode).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                            @Override
+                            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                for(QueryDocumentSnapshot doc : queryDocumentSnapshots){
+                                    if(doc.get("role").toString().equals("teamLeader")) {
+                                        String docID = doc.getId();
+                                        teamLeaderInitalsTV.setText(doc.get("initials").toString());
+                                    }else {
+                                        Toast.makeText(getActivity(), "Invalid Team Leader Passcode", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            }
+                        });
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
+            }
+        });
         // Inflate the layout for this fragment
         return view;
     }

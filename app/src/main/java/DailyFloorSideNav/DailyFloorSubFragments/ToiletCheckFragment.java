@@ -141,6 +141,10 @@ public class ToiletCheckFragment extends Fragment {
     public void onPause() {
         super.onPause();
 
+        if (countDownTimer != null) {
+            countDownTimer.cancel(); // Stop the timer
+        }
+
         Log.d("ToiletCheckFragment", "On Pause Called");
         SharedPreferences preferences = getActivity().getSharedPreferences("TimerPrefs", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
@@ -167,6 +171,12 @@ public class ToiletCheckFragment extends Fragment {
         editor.apply();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        ResumeCountDown();
+    }
+
     public void StartCountDownTimer(){
         if(countDownTimer != null){
             countDownTimer.cancel();
@@ -191,26 +201,31 @@ public class ToiletCheckFragment extends Fragment {
         SharedPreferences preferences = requireActivity().getSharedPreferences("TimerPrefs", Context.MODE_PRIVATE);
         long savedTime = preferences.getLong("timeLeft", 0);
         long timePaused = preferences.getLong("timePaused", 0);
-        long timeSincePause = System.currentTimeMillis() - timePaused;
 
-        long timeLeft = savedTime - timeSincePause;
+        if (savedTime > 0) {
+            long elapsedTime = System.currentTimeMillis() - timePaused;
+            long timeLeft = savedTime - elapsedTime;
 
-        if(timeLeft > 0){
-            countDownTimer = new CountDownTimer(timeLeft ,3600000 ){
-                public void onTick(long millisUntilFinished){
-                    NumberFormat format = new DecimalFormat("00");
-                    timerText.setText("" + millisUntilFinished / 1000);
-                    long hour = (millisUntilFinished / 3600000) % 24;
-                    long min = (millisUntilFinished / 60000) % 60;
-                    long sec = (millisUntilFinished / 1000) % 60;
-                    timerText.setText(format.format(hour) + ":" + format.format(min) + ":" + format.format(sec));
-                }
-                public void onFinish(){
-                    timerText.setText("CHECK DUE");
-                }
-            }.start();
-        }else{
-            timerText.setText("00:00:00");
+            if (timeLeft > 0) {
+                countDownTimer = new CountDownTimer(timeLeft, 1000) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        NumberFormat format = new DecimalFormat("00");
+                        long hours = (millisUntilFinished / 3600000) % 24;
+                        long minutes = (millisUntilFinished / 60000) % 60;
+                        long seconds = (millisUntilFinished / 1000) % 60;
+
+                        timerText.setText(format.format(hours) + ":" + format.format(minutes) + ":" + format.format(seconds));
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        timerText.setText("CHECK DUE");
+                    }
+                }.start();
+            } else {
+                timerText.setText("CHECK DUE");
+            }
         }
     }
 }

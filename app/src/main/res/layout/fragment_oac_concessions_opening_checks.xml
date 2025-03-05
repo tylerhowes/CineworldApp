@@ -1,13 +1,395 @@
+<?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="OACConcessionsSideNav.OACConcessionsSubFragments.OACConcessionsOpeningChecks">
+    tools:context="OACFloorSideNav.OACFloorSubFragments.FloorOpeningChecksFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Concessions Opening Checks" />
+        android:layout_height="match_parent">
+
+        <!-- All connected BIB dates have been checked, out of date BIBs have been removed -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox android:id="@+id/checkboxBIBDatesChecked"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text="All connected BIB dates have been checked, out of date BIBs have been removed" />
+
+            <TextView
+                android:id="@+id/checkboxBIBDatesCheckedInitials"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="..."
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/box_border" />
+
+        </LinearLayout>
+
+        <!-- Hot and cold water, soap and blue roll are available -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox android:id="@+id/checkboxHotColdWaterAvailable"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text="Hot and cold water, soap and blue roll are available" />
+
+            <TextView
+                android:id="@+id/checkboxHotColdWaterAvailableInitials"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="..."
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/box_border" />
+
+        </LinearLayout>
+
+        <!-- All lights are illuminated, including display lighting and popcorn warmer lights -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox android:id="@+id/checkboxLightsIlluminated"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text="All lights are illuminated, including display lighting and popcorn warmer lights" />
+
+            <TextView
+                android:id="@+id/checkboxLightsIlluminatedInitials"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="..."
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/box_border" />
+
+        </LinearLayout>
+
+        <!-- All equipment is turned on and ready for use -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox android:id="@+id/checkboxEquipmentReady"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text="All equipment is turned on and ready for use" />
+
+            <TextView
+                android:id="@+id/checkboxEquipmentReadyInitials"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="..."
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/box_border" />
+
+        </LinearLayout>
+
+        <!-- All electrical switches and covers are in place and in good condition, with no loose wires -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox android:id="@+id/checkboxElectricalSwitches"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text="All electrical switches and covers are in place and in good condition, with no loose wires" />
+
+            <TextView
+                android:id="@+id/checkboxElectricalSwitchesInitials"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="..."
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/box_border" />
+
+        </LinearLayout>
+
+        <!-- All necessary tills are on, working, and have till roll in their printers -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox android:id="@+id/checkboxTillsReady"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text="All necessary tills are on, working, and have till roll in their printers" />
+
+            <TextView
+                android:id="@+id/checkboxTillsReadyInitials"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="..."
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/box_border" />
+
+        </LinearLayout>
+
+        <!-- Nachos are made up and in the warmer with sufficient cheese dips -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox android:id="@+id/checkboxNachosReady"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text="Nachos are made up and in the warmer with sufficient cheese dips" />
+
+            <TextView
+                android:id="@+id/checkboxNachosReadyInitials"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="..."
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/box_border" />
+
+        </LinearLayout>
+
+        <!-- ketchup, mustard, crispy onions, and jalapenos are available and date dotted -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox android:id="@+id/checkboxCondimentsAvailable"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text="ketchup, mustard, crispy onions, and jalapenos are available and date dotted" />
+
+            <TextView
+                android:id="@+id/checkboxCondimentsAvailableInitials"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="..."
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/box_border" />
+
+        </LinearLayout>
+
+        <!-- Ice bins have been filled -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/checkboxIceBinsFilled"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text="Ice bins have been filled" />
+
+            <TextView
+                android:id="@+id/checkboxIceBinsFilledInitials"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="..."
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/box_border" />
+
+        </LinearLayout>
+
+        <!-- Cups, lids, straws and napkins are available -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox android:id="@+id/checkboxCupsLidsStrawsNapkins"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text="Cups, lids, straws and napkins are available" />
+
+            <TextView
+                android:id="@+id/checkboxCupsLidsStrawsNapkinsInitials"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="..."
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/box_border" />
+
+        </LinearLayout>
+
+        <!-- Confectionery stand is stocked for the days business and in line with the planogram -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox android:id="@+id/checkboxConfectioneryStocked"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text="Confectionery stand is stocked for the days business and in line with the planogram" />
+
+            <TextView
+                android:id="@+id/checkboxConfectioneryStockedInitials"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="..."
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/box_border" />
+
+        </LinearLayout>
+
+        <!-- Bain marie is on, hotdogs are being cooked, and sufficient baguettes are defrosted -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox android:id="@+id/checkboxBainMarieReady"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text="Bain marie is on, hotdogs are being cooked, and sufficient baguettes are defrosted" />
+
+            <TextView
+                android:id="@+id/checkboxBainMarieReadyInitials"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="..."
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/box_border" />
+
+        </LinearLayout>
+
+        <!-- Bottled drinks are stocked up and in line with current planogram -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox android:id="@+id/checkboxBottledDrinksStocked"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text="Bottled drinks are stocked up and in line with current planogram" />
+
+            <TextView
+                android:id="@+id/checkboxBottledDrinksStockedInitials"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="..."
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/box_border" />
+
+        </LinearLayout>
+
+        <!-- Team Leader Sign Off Section -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Team Leader Signed off: "
+                android:layout_gravity="center"
+                android:textSize="20sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="..."
+                android:id="@+id/teamLeaderInitials"
+                android:textSize="20sp"/>
+        </LinearLayout>
+        <Button
+            android:id="@+id/buttonTeamLeaderSignOff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Team Leader Sign Off"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/red"
+            android:layout_marginTop="20dp"/>
+    </LinearLayout>
 
 </FrameLayout>
