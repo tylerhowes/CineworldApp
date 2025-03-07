@@ -1,0 +1,120 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="OACFloorSideNav.OACFloorSubFragments.CustomerAssistanceCompletionFragment"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center|top"
+        android:layout_marginTop="10dp">
+
+        <!-- Form Fields -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center">
+
+            <!-- Name/Descrition -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Name or Description"
+                    android:textSize="26sp"
+                    android:textStyle="bold"
+                    android:layout_gravity="center"/>
+
+                <EditText
+                    android:id="@+id/customerNameDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:hint="Name or Description"
+                    android:background="@drawable/box_border"
+                    android:padding="10dp"
+                    android:layout_gravity="center"/>
+            </LinearLayout>
+
+            <!-- Product -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Product"
+                    android:textSize="26sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/product"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:hint="eg Corona, ICEE"
+                    android:background="@drawable/box_border"
+                    android:padding="10dp"/>
+            </LinearLayout>
+
+            <!-- Assistance Required -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="16dp"
+                android:layout_gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Observations (Reason of Refusal)"
+                    android:textSize="26sp"
+                    android:textStyle="bold"
+                    android:layout_gravity="center" />
+
+                <EditText
+                    android:id="@+id/reasonsForRefusal"
+                    android:layout_gravity="center"
+                    android:layout_width="360dp"
+                    android:layout_height="wrap_content"
+                    android:hint="Reason for refusal"
+                    android:background="@drawable/box_border"
+                    android:gravity="top|left"
+                    android:padding="10dp"/>
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+
+        <Button
+            android:id="@+id/completeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Complete"
+            android:backgroundTint="@color/red"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"/>
+    </LinearLayout>
+</FrameLayout>
