@@ -39,7 +39,7 @@
                     android:layout_gravity="center"/>
 
                 <EditText
-                    android:id="@+id/customerName"
+                    android:id="@+id/customerNameDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
@@ -47,62 +47,6 @@
                     android:background="@drawable/box_border"
                     android:padding="10dp"
                     android:layout_gravity="center"/>
-            </LinearLayout>
-
-            <!-- Date -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginStart="25dp"
-                android:layout_marginEnd="25dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Date"
-                    android:textSize="26sp"
-                    android:textStyle="bold" />
-
-                <EditText
-                    android:id="@+id/startTime"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:hint="Film Start Time"
-                    android:background="@drawable/box_border"
-                    android:padding="10dp"
-                    />
-            </LinearLayout>
-
-            <!-- Time -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="8dp"
-                android:layout_marginStart="25dp"
-                android:layout_marginEnd="25dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Time"
-                    android:textSize="26sp"
-                    android:textStyle="bold" />
-
-                <EditText
-                    android:id="@+id/time"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:hint="eg E2"
-                    android:background="@drawable/box_border"
-                    android:padding="10dp"/>
             </LinearLayout>
 
             <!-- Product -->
@@ -149,7 +93,7 @@
                     android:layout_gravity="center" />
 
                 <EditText
-                    android:id="@+id/observations"
+                    android:id="@+id/reasonsForRefusal"
                     android:layout_gravity="center"
                     android:layout_width="360dp"
                     android:layout_height="wrap_content"
