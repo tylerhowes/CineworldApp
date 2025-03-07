@@ -15,24 +15,24 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
-public class FloorEquipmentSanitisationAdapter extends RecyclerView.Adapter<FloorEquipmentSanitisationAdapter.ViewHolder> {
+public class ConcessionsTillSanitisationAdapter extends RecyclerView.Adapter<ConcessionsTillSanitisationAdapter.ViewHolder>{
 
     private final Context context;
-    private final ArrayList<FloorEquipmentSanitisationModel> floorEquipmentSanitisationList;
+    private final ArrayList<ConcessionsTillSanitisationModel> concessionsTillSanitisationModelArrayList;
 
     private FirebaseAuth auth;
     private FirebaseFirestore db;
 
     private String userInitials;
 
-    public FloorEquipmentSanitisationAdapter(Context context, ArrayList<FloorEquipmentSanitisationModel> floorEquipmentSanitisationList) {
+    public ConcessionsTillSanitisationAdapter(Context context, ArrayList<ConcessionsTillSanitisationModel> concessionsTillSanitisationModelArrayList) {
         this.context = context;
-        this.floorEquipmentSanitisationList = floorEquipmentSanitisationList;
+        this.concessionsTillSanitisationModelArrayList = concessionsTillSanitisationModelArrayList;
     }
 
     @NonNull
     @Override
-    public FloorEquipmentSanitisationAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ConcessionsTillSanitisationAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_floor_sanitisations_card, parent, false);
 
         auth = FirebaseAuth.getInstance();
@@ -44,28 +44,28 @@ public class FloorEquipmentSanitisationAdapter extends RecyclerView.Adapter<Floo
                     userInitials =  documentSnapshot.getString("initials");
                 });
 
-        return new FloorEquipmentSanitisationAdapter.ViewHolder(view);
+        return new ConcessionsTillSanitisationAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FloorEquipmentSanitisationAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ConcessionsTillSanitisationAdapter.ViewHolder holder, int position) {
 
-        FloorEquipmentSanitisationModel floorEquipmentSanitisationModel = floorEquipmentSanitisationList.get(position);
+        ConcessionsTillSanitisationModel ConcessionsTillSanitisationModel = concessionsTillSanitisationModelArrayList.get(position);
 
-        holder.timeDue.setText(floorEquipmentSanitisationModel.getSanitisedTime());
-        holder.areasToSanitise.setText(floorEquipmentSanitisationModel.getAreasToSanitise());
+        holder.timeDue.setText(ConcessionsTillSanitisationModel.getSanitisedTime());
+        holder.areasToSanitise.setText(ConcessionsTillSanitisationModel.getAreasToSanitise());
         holder.completeCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                 holder.staffInitials.setText(userInitials);
-                 holder.completeCheck.setBackgroundColor(context.getResources().getColor(R.color.green));
+                holder.staffInitials.setText(userInitials);
+                holder.completeCheck.setBackgroundColor(context.getResources().getColor(R.color.green));
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return floorEquipmentSanitisationList.size();
+        return concessionsTillSanitisationModelArrayList.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -85,3 +85,4 @@ public class FloorEquipmentSanitisationAdapter extends RecyclerView.Adapter<Floo
         }
     }
 }
+

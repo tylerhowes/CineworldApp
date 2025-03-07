@@ -15,24 +15,24 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
-public class FloorEquipmentSanitisationAdapter extends RecyclerView.Adapter<FloorEquipmentSanitisationAdapter.ViewHolder> {
+public class ConcessionsEquipmentSanitisationAdapter extends RecyclerView.Adapter<ConcessionsEquipmentSanitisationAdapter.ViewHolder>{
 
     private final Context context;
-    private final ArrayList<FloorEquipmentSanitisationModel> floorEquipmentSanitisationList;
+    private final ArrayList<ConcessionsEquipmentSanitisationModel> concessionsEquipmentSanitisationModelList;
 
     private FirebaseAuth auth;
     private FirebaseFirestore db;
 
     private String userInitials;
 
-    public FloorEquipmentSanitisationAdapter(Context context, ArrayList<FloorEquipmentSanitisationModel> floorEquipmentSanitisationList) {
+    public ConcessionsEquipmentSanitisationAdapter(Context context, ArrayList<ConcessionsEquipmentSanitisationModel> concessionsEquipmentSanitisationModelList) {
         this.context = context;
-        this.floorEquipmentSanitisationList = floorEquipmentSanitisationList;
+        this.concessionsEquipmentSanitisationModelList = concessionsEquipmentSanitisationModelList;
     }
 
     @NonNull
     @Override
-    public FloorEquipmentSanitisationAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ConcessionsEquipmentSanitisationAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_floor_sanitisations_card, parent, false);
 
         auth = FirebaseAuth.getInstance();
@@ -44,28 +44,32 @@ public class FloorEquipmentSanitisationAdapter extends RecyclerView.Adapter<Floo
                     userInitials =  documentSnapshot.getString("initials");
                 });
 
-        return new FloorEquipmentSanitisationAdapter.ViewHolder(view);
+        return new ConcessionsEquipmentSanitisationAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FloorEquipmentSanitisationAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ConcessionsEquipmentSanitisationAdapter.ViewHolder holder, int position) {
 
-        FloorEquipmentSanitisationModel floorEquipmentSanitisationModel = floorEquipmentSanitisationList.get(position);
+        ConcessionsEquipmentSanitisationModel concessionsEquipmentSanitisationModel = concessionsEquipmentSanitisationModelList.get(position);
 
-        holder.timeDue.setText(floorEquipmentSanitisationModel.getSanitisedTime());
-        holder.areasToSanitise.setText(floorEquipmentSanitisationModel.getAreasToSanitise());
+        holder.timeDue.setText(concessionsEquipmentSanitisationModel.getSanitisedTime());
+
+        String closeAreasToSanitise = concessionsEquipmentSanitisationModel.getAreasToSanitise();
+        String areasToSanitise = concessionsEquipmentSanitisationModel.getCloseAreasToSanitise();
+        holder.areasToSanitise.setText(areasToSanitise + " " + closeAreasToSanitise);
+
         holder.completeCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                 holder.staffInitials.setText(userInitials);
-                 holder.completeCheck.setBackgroundColor(context.getResources().getColor(R.color.green));
+                holder.staffInitials.setText(userInitials);
+                holder.completeCheck.setBackgroundColor(context.getResources().getColor(R.color.green));
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return floorEquipmentSanitisationList.size();
+        return concessionsEquipmentSanitisationModelList.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -73,6 +77,7 @@ public class FloorEquipmentSanitisationAdapter extends RecyclerView.Adapter<Floo
         TextView timeDue;
         TextView staffInitials;
         TextView areasToSanitise;
+        TextView closeAreasToSanitise;
         Button completeCheck;
 
         public ViewHolder(@NonNull View itemView) {
