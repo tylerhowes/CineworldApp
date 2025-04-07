@@ -1,17 +1,20 @@
 package com.example.cineworldapp;
 
-public class FloorEquipmentSanitisationModel {
+public class ConcessionsEquipmentSanitisationModel {
+
 
     private boolean isSanitised;
     private String staffInitials;
     private String timeDue;
     private String areasToSanitise;
+    private String closeAreasToSanitise;
 
-    public FloorEquipmentSanitisationModel(boolean isSanitised, String staffInitials, String timeDue, String areasToSanitise) {
+    public ConcessionsEquipmentSanitisationModel(boolean isSanitised, String staffInitials, String timeDue, String areasToSanitise, String closeAreasToSanitise) {
         this.isSanitised = isSanitised;
         this.staffInitials = staffInitials;
         this.timeDue = timeDue;
         this.areasToSanitise = areasToSanitise;
+        this.closeAreasToSanitise = closeAreasToSanitise;
     }
 
     public boolean isSanitised() {
@@ -50,8 +53,12 @@ public class FloorEquipmentSanitisationModel {
         return areasToSanitise;
     }
 
+    public void setCloseAreasToSanitise(String closeAreasToSanitise) {
+        this.closeAreasToSanitise = closeAreasToSanitise;
+    }
 
-
-
+    public String getCloseAreasToSanitise() {
+        return closeAreasToSanitise;
+    }
 
 }
