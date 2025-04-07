@@ -26,8 +26,13 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class FloorOpeningChecksFragment extends Fragment {
@@ -36,7 +41,6 @@ public class FloorOpeningChecksFragment extends Fragment {
     FirebaseFirestore db;
     String userInitials;
 
-    String teamLeaderPasscode;
     TextView teamLeaderInitalsTV;
 
     int[] checkboxIds = {
@@ -54,134 +58,117 @@ public class FloorOpeningChecksFragment extends Fragment {
             R.id.checkboxBinLiners
     };
 
-    Map<Integer, Boolean> checkboxStates;
-    Map<Integer, String> initialsStates;
-    Map<Integer, String> tlState;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-
-        super.onCreate(savedInstanceState);
-
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("sharedPrefs", getActivity().MODE_PRIVATE);
-
-        checkboxStates = new HashMap<>();
-        initialsStates = new HashMap<>();
-        tlState = new HashMap<>();
-        for(int checkboxID : checkboxIds) {
-
-            String checkboxName = getResources().getResourceEntryName(checkboxID);
-            String textViewName = checkboxName + "Initials";
-
-            int textViewID = getResources().getIdentifier(textViewName, "id", getActivity().getPackageName());
-
-            boolean isChecked = sharedPreferences.getBoolean(checkboxName, false);
-            checkboxStates.put(checkboxID, isChecked);
-            initialsStates.put(textViewID, sharedPreferences.getString(textViewName, "..."));
-
-        }
-        int tlInitials = getResources().getIdentifier("teamLeaderInitals", "id", getActivity().getPackageName());
-        tlState.put(tlInitials, sharedPreferences.getString("teamLeaderInitials", "..."));
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_oac_floor_opening_checks, container, false);
 
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         String UID = auth.getCurrentUser().getUid();
+        String todayDate = getTodayDate();
 
-        db.collection("users").document(UID).get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    userInitials =  documentSnapshot.getString("initials");
-                });
-
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("sharedPrefs", getActivity().MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-
-
-        for (int id : checkboxIds) {
-            CheckBox checkBox = view.findViewById(id);
-            if (checkBox != null) {
-
-                String checkboxName = getResources().getResourceEntryName(id);
-                String textViewName = checkboxName + "Initials";
-
-                int textViewID = getResources().getIdentifier(textViewName, "id", getActivity().getPackageName());
-                TextView textView = view.findViewById(textViewID);
-
-                boolean isChecked = checkboxStates.getOrDefault(id,false);
-                String initials = initialsStates.getOrDefault(textViewID, "...");
-                textView.setText(initials);
-                checkBox.setChecked(isChecked);
-
-                checkBox.setOnCheckedChangeListener((compoundButton, b) -> {
-                    if(b) {
-                        textView.setText(userInitials);
-                    } else {
-                        textView.setText("...");
-                    }
-                    editor.putBoolean(checkboxName, b);
-                    editor.putString(textViewName, textView.getText().toString());
-                    editor.apply();
-                });
-            }
-        }
-
-
+        DocumentReference openingChecksRef = db
+                .collection("Documents")
+                .document(todayDate)
+                .collection("Daily Floor")
+                .document("Opening Checks");
 
         teamLeaderInitalsTV = view.findViewById(R.id.teamLeaderInitials);
-        teamLeaderInitalsTV.setText(sharedPreferences.getString("teamLeaderInitials", "..."));
+
+        // Fetch initials first so we can use it in checkbox rendering
+        db.collection("users").document(UID).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    userInitials = documentSnapshot.getString("initials");
+
+                    // Now fetch checkbox states and team leader initials
+                    openingChecksRef.get().addOnSuccessListener(snapshot -> {
+                        if (!snapshot.exists()) {
+                            Map<String, Object> defaultData = new HashMap<>();
+                            for (int id : checkboxIds) {
+                                String checkboxName = getResources().getResourceEntryName(id);
+                                String textViewName = checkboxName + "Initials";
+                                defaultData.put(checkboxName, false);
+                                defaultData.put(textViewName, "...");
+                            }
+                            defaultData.put("teamLeaderInitials", "...");
+                            openingChecksRef.set(defaultData);
+                        }
+
+                        for (int id : checkboxIds) {
+                            CheckBox checkBox = view.findViewById(id);
+                            String checkboxName = getResources().getResourceEntryName(id);
+                            String textViewName = checkboxName + "Initials";
+                            int textViewID = getResources().getIdentifier(textViewName, "id", getActivity().getPackageName());
+                            TextView textView = view.findViewById(textViewID);
+
+                            if (checkBox != null && textView != null) {
+                                boolean isChecked = snapshot.getBoolean(checkboxName) != null && snapshot.getBoolean(checkboxName);
+                                String initials = snapshot.getString(textViewName);
+                                if (initials == null) initials = "...";
+
+                                checkBox.setChecked(isChecked);
+                                textView.setText(initials);
+
+                                checkBox.setOnCheckedChangeListener((compoundButton, checked) -> {
+                                    textView.setText(checked ? userInitials : "...");
+                                    Map<String, Object> updates = new HashMap<>();
+                                    updates.put(checkboxName, checked);
+                                    updates.put(textViewName, textView.getText().toString());
+                                    openingChecksRef.set(updates, SetOptions.merge());
+                                });
+                            }
+                        }
+
+                        // Load TL initials if present
+                        String teamLeaderInitials = snapshot.getString("teamLeaderInitials");
+                        if (teamLeaderInitials != null) {
+                            teamLeaderInitalsTV.setText(teamLeaderInitials);
+                        }
+                    });
+                });
 
         Button teamLeaderSignOff = view.findViewById(R.id.buttonTeamLeaderSignOff);
-        teamLeaderSignOff.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle("Team Leader Passcode");
+        teamLeaderSignOff.setOnClickListener(view1 -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle("Team Leader Passcode");
 
-                // Set up the input
-                final EditText input = new EditText(getActivity());
-                // Specify the type of input expected
-                input.setInputType(InputType.TYPE_CLASS_NUMBER);
-                builder.setView(input);
+            final EditText input = new EditText(getActivity());
+            input.setInputType(InputType.TYPE_CLASS_NUMBER);
+            builder.setView(input);
 
-                // Set up the buttons
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        teamLeaderPasscode = input.getText().toString();
+            builder.setPositiveButton("OK", (dialog, which) -> {
+                String teamLeaderPasscode = input.getText().toString();
 
-                         db.collection("users").whereEqualTo("loginCode", teamLeaderPasscode).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                            @Override
-                            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                for(QueryDocumentSnapshot doc : queryDocumentSnapshots){
-                                    if(doc.get("role").toString().equals("teamLeader")) {
-                                        String docID = doc.getId();
-                                        teamLeaderInitalsTV.setText(doc.get("initials").toString());
-                                        editor.putString("teamLeaderInitials", teamLeaderInitalsTV.getText().toString());
-                                        editor.apply();
-                                    }else {
-                                        Toast.makeText(getActivity(), "Invalid Team Leader Passcode", Toast.LENGTH_SHORT).show();
-                                    }
+                db.collection("users")
+                        .whereEqualTo("loginCode", teamLeaderPasscode)
+                        .get()
+                        .addOnSuccessListener(queryDocumentSnapshots -> {
+                            for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                                if ("teamLeader".equals(doc.getString("role"))) {
+                                    String initials = doc.getString("initials");
+                                    teamLeaderInitalsTV.setText(initials);
+
+                                    Map<String, Object> update = new HashMap<>();
+                                    update.put("teamLeaderInitials", initials);
+                                    openingChecksRef.set(update, SetOptions.merge());
+                                } else {
+                                    Toast.makeText(getActivity(), "Invalid Team Leader Passcode", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
-                    }
-                });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
+            });
 
-                builder.show();
-            }
+            builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+            builder.show();
         });
-        // Inflate the layout for this fragment
+
         return view;
     }
+
+    private String getTodayDate() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+        return sdf.format(new Date());
+    }
+
+
 }

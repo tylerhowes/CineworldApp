@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.cineworldapp.R;
 
@@ -60,24 +61,34 @@ public class CustomerAssistanceCompletionFragment extends Fragment {
         completeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String customerName = nameET.getText().toString();
-                String screenNumber = dropdown.getSelectedItem().toString();
-                String seatNumber = seatET.getText().toString();
-                String startTime = startET.getText().toString();
-                String finishTime = finishET.getText().toString();
-                String assistanceRequired = assistanceET.getText().toString();
+                if(!isEmpty(nameET) && !isEmpty(seatET) && !isEmpty(startET) && !isEmpty(finishET) && !isEmpty(assistanceET)){
+                    String customerName = nameET.getText().toString();
+                    String screenNumber = dropdown.getSelectedItem().toString();
+                    String seatNumber = seatET.getText().toString();
+                    String startTime = startET.getText().toString();
+                    String finishTime = finishET.getText().toString();
+                    String assistanceRequired = assistanceET.getText().toString();
 
-                Bundle result = new Bundle();
-                result.putString("customerName", customerName);
-                result.putString("screenNumber", screenNumber);
-                result.putString("seatNumber", seatNumber);
-                result.putString("startTime", startTime);
-                result.putString("finishTime", finishTime);
-                result.putString("assistanceRequired", assistanceRequired);
-                Log.d("CustomerAssistance", "Customer Assistance sent value");
-                getParentFragmentManager().setFragmentResult("CustomerAssistanceCheckCompleteKey", result);
-                getActivity().getSupportFragmentManager().popBackStack();
+                    Bundle result = new Bundle();
+                    result.putString("customerName", customerName);
+                    result.putString("screenNumber", screenNumber);
+                    result.putString("seatNumber", seatNumber);
+                    result.putString("startTime", startTime);
+                    result.putString("finishTime", finishTime);
+                    result.putString("assistanceRequired", assistanceRequired);
+                    Log.d("CustomerAssistance", "Customer Assistance sent value");
+                    getParentFragmentManager().setFragmentResult("CustomerAssistanceCheckCompleteKey", result);
+                    getActivity().getSupportFragmentManager().popBackStack();
+                }
+                else{
+                    Toast.makeText(getContext(), "Please Fill All Fields", Toast.LENGTH_SHORT).show();
+
+                }
             }
         });
+    }
+
+    private boolean isEmpty(EditText myeditText) {
+        return myeditText.getText().toString().trim().length() == 0;
     }
 }

@@ -1,8 +1,11 @@
 package OACFloorSideNav.OACFloorSubFragments;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,25 +16,21 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-
 import com.example.cineworldapp.CustomerAssistanceCardAdapter;
 import com.example.cineworldapp.CustomerAssistanceDataModel;
 import com.example.cineworldapp.R;
-import com.example.cineworldapp.ToiletCheckDataModel;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
-import DailyFloorSideNav.DailyFloorSubFragments.ToiletCheckCompletionFragment;
-
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CustomerAssistanceFragment extends Fragment {
 
@@ -41,6 +40,10 @@ public class CustomerAssistanceFragment extends Fragment {
     CustomerAssistanceCardAdapter adapter;
     RecyclerView customerAssistanceRV;
 
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseAuth auth = FirebaseAuth.getInstance();
+    String currentStaffInitials;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +52,6 @@ public class CustomerAssistanceFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_oac_floor_customer_assistance, container, false);
     }
 
@@ -57,22 +59,16 @@ public class CustomerAssistanceFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
-
-
-        Gson gson = new Gson();
-        SharedPreferences sharedPrefs = getActivity().getSharedPreferences("customerAssistanceFragPrefs", Context.MODE_PRIVATE);
-        String json = sharedPrefs.getString("customerAssistanceDataJson", "");
-        Type type = new TypeToken<ArrayList<CustomerAssistanceDataModel>>(){}.getType();
-        if(savedInstanceState != null){
-            customerAssistanceDataModelArrayList = savedInstanceState.getParcelableArrayList("customerAssistanceArrayList");
-        } else {
-            customerAssistanceDataModelArrayList = gson.fromJson(json, type);
-            if(customerAssistanceDataModelArrayList == null){
-                customerAssistanceDataModelArrayList = new ArrayList<>();
+        String staffID = auth.getCurrentUser().getUid();
+        db.collection("users").document(staffID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot snapshot = task.getResult();
+                currentStaffInitials = snapshot.getString("initials");
             }
-        }
+        });
 
+        customerAssistanceDataModelArrayList = new ArrayList<>();
         customerAssistanceRV = view.findViewById(R.id.recycleView);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
 
@@ -81,56 +77,100 @@ public class CustomerAssistanceFragment extends Fragment {
         customerAssistanceRV.setAdapter(adapter);
 
         addLogButton = view.findViewById(R.id.addLogButton);
-        addLogButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                final FragmentTransaction fragTransaction = fragmentManager.beginTransaction();
-                fragTransaction.add(R.id.oacFloor, new CustomerAssistanceCompletionFragment());
-                fragTransaction.addToBackStack(null);
-                fragTransaction.commit();
-
-            }
+        addLogButton.setOnClickListener(v -> {
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            FragmentTransaction fragTransaction = fragmentManager.beginTransaction();
+            fragTransaction.add(R.id.oacFloor, new CustomerAssistanceCompletionFragment());
+            fragTransaction.addToBackStack(null);
+            fragTransaction.commit();
         });
 
-
+        loadCustomerAssistanceData();
 
         getActivity().getSupportFragmentManager().setFragmentResultListener("CustomerAssistanceCheckCompleteKey", getViewLifecycleOwner(), new FragmentResultListener() {
             @Override
             public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
-
                 Log.d("CustomerAssistance", "Customer Assistance received value");
 
-                String customerName= result.getString("customerName");
+                String customerName = result.getString("customerName");
                 String screenNumber = result.getString("screenNumber");
-                String seatNumber= result.getString("seatNumber");
-                String startTime= result.getString("startTime");
-                String finishTime= result.getString("finishTime");
-                String assistanceRequired= result.getString("assistanceRequired");
+                String seatNumber = result.getString("seatNumber");
+                String startTime = result.getString("startTime");
+                String finishTime = result.getString("finishTime");
+                String assistanceRequired = result.getString("assistanceRequired");
 
-                customerAssistanceDataModelArrayList.add(new CustomerAssistanceDataModel(customerName, screenNumber, seatNumber, startTime, finishTime, assistanceRequired));
+                CustomerAssistanceDataModel model = new CustomerAssistanceDataModel(
+                        customerName,
+                        screenNumber,
+                        seatNumber,
+                        startTime,
+                        finishTime,
+                        assistanceRequired,
+                        currentStaffInitials
+                );
 
-                adapter.notifyItemInserted(customerAssistanceDataModelArrayList.size() - 1);
-
-
-
+                addCustomerAssistanceToFirestore(model);
             }
         });
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
+    private void loadCustomerAssistanceData() {
+        String currentDate = new SimpleDateFormat("dd.MM.yyyy").format(new Date());
 
-        Log.d("CustomerAssistance", "On Pause Called");
-        SharedPreferences preferences = getActivity().getSharedPreferences("customerAssistanceFragPrefs", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
+        CollectionReference logsRef = db.collection("Documents")
+                .document(currentDate)
+                .collection("Daily Floor")
+                .document("Customer Assistance Logs")
+                .collection("Logs");
 
-        Gson gson = new Gson();
-        String json = gson.toJson(customerAssistanceDataModelArrayList);
-        editor.putString("customerAssistanceDataJson", json);
+        logsRef.get().addOnSuccessListener(queryDocumentSnapshots -> {
+            customerAssistanceDataModelArrayList.clear();
+            for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
+                CustomerAssistanceDataModel model = new CustomerAssistanceDataModel(
+                        doc.getString("customerName"),
+                        doc.getString("screen"),
+                        doc.getString("seatNumber"),
+                        doc.getString("startTime"),
+                        doc.getString("finishTime"),
+                        doc.getString("assistanceRequired"),
+                        doc.getString("staffInitials")
+                );
+                customerAssistanceDataModelArrayList.add(model);
+            }
+            adapter.notifyDataSetChanged();
+            Log.d("CustomerAssistance", "Data loaded from Firestore.");
+        }).addOnFailureListener(e -> {
+            Log.e("CustomerAssistance", "Error loading data from Firestore", e);
+        });
+    }
 
-        editor.apply();
+    private void addCustomerAssistanceToFirestore(CustomerAssistanceDataModel model) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String currentDate = new SimpleDateFormat("dd.MM.yyyy").format(new Date());
+
+        Map<String, Object> dataMap = new HashMap<>();
+        dataMap.put("customerName", model.getCustomerName());
+        dataMap.put("screen", model.getScreen());
+        dataMap.put("seatNumber", model.getSeatNumber());
+        dataMap.put("startTime", model.getStartTime());
+        dataMap.put("finishTime", model.getFinishTime());
+        dataMap.put("assistanceRequired", model.getAssistanceRequired());
+        dataMap.put("staffInitials", model.getStaffInitials());
+
+        CollectionReference logsRef = db.collection("Documents")
+                .document(currentDate)
+                .collection("Daily Floor")
+                .document("Customer Assistance Logs")
+                .collection("Logs");
+
+        logsRef.add(dataMap)
+                .addOnSuccessListener(documentReference -> {
+                    customerAssistanceDataModelArrayList.add(model);
+                    adapter.notifyItemInserted(customerAssistanceDataModelArrayList.size() - 1);
+                    Log.d("CustomerAssistance", "Data added to Firestore.");
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("CustomerAssistance", "Error writing document", e);
+                });
     }
 }

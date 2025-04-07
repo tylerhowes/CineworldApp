@@ -11,14 +11,16 @@ public class CustomerAssistanceDataModel implements Parcelable{
     String startTime;
     String finishTime ;
     String assistanceRequired;
+    String staffInitials;
 
-    public CustomerAssistanceDataModel(String customerName, String screen, String seatNumber, String startTime, String finishTime, String assistanceRequired){
+    public CustomerAssistanceDataModel(String customerName, String screen, String seatNumber, String startTime, String finishTime, String assistanceRequired, String staffInitials){
         this.customerName = customerName;
         this.screen = screen;
         this.seatNumber = seatNumber;
         this.startTime = startTime;
         this.finishTime = finishTime;
         this.assistanceRequired =  assistanceRequired;
+        this.staffInitials = staffInitials;
     }
 
     public String getCustomerName() {
@@ -65,6 +67,14 @@ public class CustomerAssistanceDataModel implements Parcelable{
         this.assistanceRequired = assistanceRequired;
     }
 
+    public void setStaffInitials(String staffInitials){
+        this.staffInitials = staffInitials;
+    }
+
+    public String getStaffInitials(){
+        return staffInitials;
+    }
+
     // Parcelable implementation
     protected CustomerAssistanceDataModel(Parcel in) {
         customerName = in.readString();
@@ -73,6 +83,7 @@ public class CustomerAssistanceDataModel implements Parcelable{
         startTime = in.readString();
         finishTime = in.readString();
         assistanceRequired = in.readString();
+        staffInitials = in.readString();
 
     }
 
@@ -95,6 +106,7 @@ public class CustomerAssistanceDataModel implements Parcelable{
         dest.writeString(startTime);
         dest.writeString(finishTime);
         dest.writeString(assistanceRequired);
+        dest.writeString(staffInitials);
     }
     @Override
     public int describeContents() {
