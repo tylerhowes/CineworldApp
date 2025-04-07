@@ -56,6 +56,7 @@ public class FloorOpeningChecksFragment extends Fragment {
 
     Map<Integer, Boolean> checkboxStates;
     Map<Integer, String> initialsStates;
+    Map<Integer, String> tlState;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,6 +67,7 @@ public class FloorOpeningChecksFragment extends Fragment {
 
         checkboxStates = new HashMap<>();
         initialsStates = new HashMap<>();
+        tlState = new HashMap<>();
         for(int checkboxID : checkboxIds) {
 
             String checkboxName = getResources().getResourceEntryName(checkboxID);
@@ -75,9 +77,11 @@ public class FloorOpeningChecksFragment extends Fragment {
 
             boolean isChecked = sharedPreferences.getBoolean(checkboxName, false);
             checkboxStates.put(checkboxID, isChecked);
-
             initialsStates.put(textViewID, sharedPreferences.getString(textViewName, "..."));
+
         }
+        int tlInitials = getResources().getIdentifier("teamLeaderInitals", "id", getActivity().getPackageName());
+        tlState.put(tlInitials, sharedPreferences.getString("teamLeaderInitials", "..."));
     }
 
     @Override
@@ -126,7 +130,11 @@ public class FloorOpeningChecksFragment extends Fragment {
             }
         }
 
+
+
         teamLeaderInitalsTV = view.findViewById(R.id.teamLeaderInitials);
+        teamLeaderInitalsTV.setText(sharedPreferences.getString("teamLeaderInitials", "..."));
+
         Button teamLeaderSignOff = view.findViewById(R.id.buttonTeamLeaderSignOff);
         teamLeaderSignOff.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,10 +142,9 @@ public class FloorOpeningChecksFragment extends Fragment {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("Team Leader Passcode");
 
-
                 // Set up the input
                 final EditText input = new EditText(getActivity());
-                // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+                // Specify the type of input expected
                 input.setInputType(InputType.TYPE_CLASS_NUMBER);
                 builder.setView(input);
 
@@ -154,6 +161,8 @@ public class FloorOpeningChecksFragment extends Fragment {
                                     if(doc.get("role").toString().equals("teamLeader")) {
                                         String docID = doc.getId();
                                         teamLeaderInitalsTV.setText(doc.get("initials").toString());
+                                        editor.putString("teamLeaderInitials", teamLeaderInitalsTV.getText().toString());
+                                        editor.apply();
                                     }else {
                                         Toast.makeText(getActivity(), "Invalid Team Leader Passcode", Toast.LENGTH_SHORT).show();
                                     }

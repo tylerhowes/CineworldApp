@@ -14,12 +14,15 @@ import android.widget.LinearLayout;
 import com.example.cineworldapp.R;
 import com.example.cineworldapp.ScreenCardAdapter;
 import com.example.cineworldapp.ScreenCardModel;
+import com.example.cineworldapp.ScreenCheck;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
 
 public class AntiPiracyFragment extends Fragment {
 
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -33,10 +36,15 @@ public class AntiPiracyFragment extends Fragment {
 
         RecyclerView recyclerView = view.findViewById(R.id.screenRecycleView);
 
+        ArrayList<ScreenCheck> checks = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            checks.add(new ScreenCheck());
+        }
+
         ArrayList<ScreenCardModel> screenCardModelArrayList = new ArrayList<>();
-        screenCardModelArrayList.add(new ScreenCardModel(" 1 ", "The Matrix", "10:00", "10:30", "12:30"));
-        screenCardModelArrayList.add(new ScreenCardModel(" 2 ", "The Matrix 2", "10:00", "10:30", "12:30"));
-        screenCardModelArrayList.add(new ScreenCardModel(" 3 ", "The Matrix 3", "10:00", "10:30", "12:30"));
+        screenCardModelArrayList.add(new ScreenCardModel("1", "The Matrix", "10:00", "10:30", "12:30",checks));
+        screenCardModelArrayList.add(new ScreenCardModel("2", "The Matrix 2", "10:00", "10:30", "12:30", checks));
+        screenCardModelArrayList.add(new ScreenCardModel("3", "The Matrix 3", "10:00", "10:30", "12:30", checks));
 
         ScreenCardAdapter screenCardAdapter = new ScreenCardAdapter(getContext(), screenCardModelArrayList);
 
