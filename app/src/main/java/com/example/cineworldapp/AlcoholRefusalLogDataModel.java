@@ -10,13 +10,23 @@ public class AlcoholRefusalLogDataModel implements Parcelable {
     String time;
     String date;
     String reason;
+    String staffInitials;
 
-    public AlcoholRefusalLogDataModel(String nameOrDescription, String product, String time, String date, String reason) {
+    public AlcoholRefusalLogDataModel(String nameOrDescription, String product, String time, String date, String reason, String staffInitials) {
         this.nameOrDescription = nameOrDescription;
         this.product = product;
         this.time = time;
         this.date = date;
         this.reason = reason;
+        this.staffInitials = staffInitials;
+    }
+
+    public String getStaffInitials(){
+        return staffInitials;
+    }
+
+    public void setStaffInitials(String staffInitials){
+        this.staffInitials = staffInitials;
     }
 
     public String getNameOrDescription() {

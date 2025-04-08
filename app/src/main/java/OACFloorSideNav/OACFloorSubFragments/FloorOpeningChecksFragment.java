@@ -70,7 +70,7 @@ public class FloorOpeningChecksFragment extends Fragment {
         DocumentReference openingChecksRef = db
                 .collection("Documents")
                 .document(todayDate)
-                .collection("Daily Floor")
+                .collection("OAC Floor")
                 .document("Opening Checks");
 
         teamLeaderInitalsTV = view.findViewById(R.id.teamLeaderInitials);

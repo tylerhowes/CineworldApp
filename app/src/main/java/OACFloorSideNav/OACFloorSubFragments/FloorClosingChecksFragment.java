@@ -68,7 +68,7 @@ public class FloorClosingChecksFragment extends Fragment {
         DocumentReference closingChecksRef = db
                 .collection("Documents")
                 .document(todayDate)
-                .collection("Daily Floor")
+                .collection("OAC Floor")
                 .document("Closing Checks");
 
         // Load user's initials

@@ -119,7 +119,7 @@ public class CustomerAssistanceFragment extends Fragment {
 
         CollectionReference logsRef = db.collection("Documents")
                 .document(currentDate)
-                .collection("Daily Floor")
+                .collection("OAC Floor")
                 .document("Customer Assistance Logs")
                 .collection("Logs");
 
@@ -159,7 +159,7 @@ public class CustomerAssistanceFragment extends Fragment {
 
         CollectionReference logsRef = db.collection("Documents")
                 .document(currentDate)
-                .collection("Daily Floor")
+                .collection("OAC Floor")
                 .document("Customer Assistance Logs")
                 .collection("Logs");
 

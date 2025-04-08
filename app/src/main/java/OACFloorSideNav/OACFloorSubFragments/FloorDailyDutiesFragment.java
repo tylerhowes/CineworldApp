@@ -78,7 +78,7 @@ public class FloorDailyDutiesFragment extends Fragment {
         DocumentReference dutiesRef = db
                 .collection("Documents")
                 .document(todayDate)
-                .collection("Daily Floor")
+                .collection("OAC Floor")
                 .document("Daily Duties");
 
         db.collection("users").document(UID).get()

@@ -1,4 +1,4 @@
-package com.example.cineworldapp;
+package OACConcessionsSideNav.OACConcessionsSubFragments;
 
 import android.os.Bundle;
 
@@ -10,10 +10,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
+
+import com.example.cineworldapp.R;
 
 //THIS IS WHERE I LEFT OFF
 public class FragmentAlcoholRefusalLogCompletion extends Fragment {
