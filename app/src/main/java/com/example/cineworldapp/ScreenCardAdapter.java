@@ -78,9 +78,9 @@ public class ScreenCardAdapter extends RecyclerView.Adapter<ScreenCardAdapter.Vi
         String currentDate = dateFormat.format(date);
         db.collection("Documents")
                 .document(currentDate)
-                .collection("Anti Piracy Checks")
-                .document("Screen " + screenCardModel.getScreen())
-                .collection("Showings")
+                .collection("Daily Floor")
+                .document("Anti Piracy Checks")
+                .collection("Screen " + screenCardModel.getScreen())
                 .document(screenCardModel.getTitle() + " " + screenCardModel.getStartTime())
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -156,9 +156,9 @@ public class ScreenCardAdapter extends RecyclerView.Adapter<ScreenCardAdapter.Vi
                         screenCardModel.getChecks().set(0, check);
                         db.collection("Documents")
                                 .document(currentDate)
-                                .collection("Anti Piracy Checks")
-                                .document("Screen " + screenCardModel.getScreen())
-                                .collection("Showings")
+                                .collection("Daily Floor")
+                                .document("Anti Piracy Checks")
+                                .collection("Screen " + screenCardModel.getScreen())
                                 .document(screenCardModel.getTitle() + " " + screenCardModel.getStartTime())
                                 .set(screenCardModel);
                     }
@@ -208,9 +208,9 @@ public class ScreenCardAdapter extends RecyclerView.Adapter<ScreenCardAdapter.Vi
                         screenCardModel.getChecks().set(1, check);
                         db.collection("Documents")
                                 .document(currentDate)
-                                .collection("Anti Piracy Checks")
-                                .document("Screen " + screenCardModel.getScreen())
-                                .collection("Showings")
+                                .collection("Daily Floor")
+                                .document("Anti Piracy Checks")
+                                .collection("Screen " + screenCardModel.getScreen())
                                 .document(screenCardModel.getTitle() + " " + screenCardModel.getStartTime())
                                 .set(screenCardModel);
                     }
@@ -261,9 +261,9 @@ public class ScreenCardAdapter extends RecyclerView.Adapter<ScreenCardAdapter.Vi
                         screenCardModel.getChecks().set(2, check);
                         db.collection("Documents")
                                 .document(currentDate)
-                                .collection("Anti Piracy Checks")
-                                .document("Screen " + screenCardModel.getScreen())
-                                .collection("Showings")
+                                .collection("Daily Floor")
+                                .document("Anti Piracy Checks")
+                                .collection("Screen " + screenCardModel.getScreen())
                                 .document(screenCardModel.getTitle() + " " + screenCardModel.getStartTime())
                                 .set(screenCardModel);}
                 });
