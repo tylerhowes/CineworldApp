@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +18,17 @@ import android.widget.TextView;
 import com.example.cineworldapp.FloorEquipmentSanitisationAdapter;
 import com.example.cineworldapp.FloorEquipmentSanitisationModel;
 import com.example.cineworldapp.R;
+import com.example.cineworldapp.ToiletCheckDataModel;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class FloorEquipmentSanitisationFragment extends Fragment {
@@ -54,37 +60,78 @@ public class FloorEquipmentSanitisationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
+
+
         return inflater.inflate(R.layout.fragment_daily_floor_equipment_sanitisation, container, false);
     }
 
+    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
-
-        SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
-
-        long currentTime = System.currentTimeMillis();
-        String currentTimeString = format.format(currentTime);
-
-
+        timerText = view.findViewById(R.id.timer);
+        ResumeCountDown();
 
         floorEquipmentSanitisationList = new ArrayList<>();
-        floorEquipmentSanitisationList.add(new FloorEquipmentSanitisationModel(false, "...", checkTimeList.get(0), areasToSanitise));
-        floorEquipmentSanitisationList.add(new FloorEquipmentSanitisationModel(false, "...", checkTimeList.get(1), areasToSanitise));
-        floorEquipmentSanitisationList.add(new FloorEquipmentSanitisationModel(false, "...", checkTimeList.get(2), areasToSanitise));
-        floorEquipmentSanitisationList.add(new FloorEquipmentSanitisationModel(false, "...", checkTimeList.get(3), areasToSanitise));
-        floorEquipmentSanitisationList.add(new FloorEquipmentSanitisationModel(false, "...", checkTimeList.get(4), areasToSanitise));
+        floorEquipmentSanitisationAdapter = new FloorEquipmentSanitisationAdapter(getContext(), floorEquipmentSanitisationList, this);
 
-
-        floorEquipmentSanitisationAdapter = new FloorEquipmentSanitisationAdapter(getContext(), floorEquipmentSanitisationList);
-        floorEquipmentSanitisationAdapter.notifyDataSetChanged();
         RecyclerView recyclerView = view.findViewById(R.id.equipmentSanitisationRecyclerView);
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-
-        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(floorEquipmentSanitisationAdapter);
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String currentDate = new SimpleDateFormat("dd.MM.yyyy").format(new Date());
+
+        for (String time : checkTimeList) {
+            String finalTime = time;
+
+            db.collection("Documents")
+                    .document(currentDate)
+                    .collection("Daily Floor")
+                    .document("Equipment Sanitisation")
+                    .collection("Logs")
+                    .document(finalTime)
+                    .get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            // Load from Firestore
+                            boolean isSanitised = documentSnapshot.getBoolean("isSanitised") != null && documentSnapshot.getBoolean("isSanitised");
+                            String initials = documentSnapshot.getString("staffInitials");
+                            String timeCompleted = documentSnapshot.getString("timeCompleted");
+
+                            FloorEquipmentSanitisationModel model = new FloorEquipmentSanitisationModel(
+                                    isSanitised,
+                                    initials != null ? initials : "...",
+                                    finalTime,
+                                    areasToSanitise,
+                                    timeCompleted
+                            );
+                            floorEquipmentSanitisationList.add(model);
+                        } else {
+                            // Create a default document in Firestore
+                            Map<String, Object> defaultData = new HashMap<>();
+                            defaultData.put("isSanitised", false);
+                            defaultData.put("staffInitials", "...");
+                            defaultData.put("timeDue", finalTime);
+                            defaultData.put("areasToSanitise", areasToSanitise);
+                            defaultData.put("timeCompleted", null);
+
+                            db.collection("Documents")
+                                    .document(currentDate)
+                                    .collection("Daily Floor")
+                                    .document("Equipment Sanitisation")
+                                    .collection("Logs")
+                                    .document(finalTime)
+                                    .set(defaultData);
+
+                            // Add default model to list
+                            floorEquipmentSanitisationList.add(new FloorEquipmentSanitisationModel(false, "...", finalTime, areasToSanitise, null));
+                        }
+
+                        floorEquipmentSanitisationAdapter.notifyDataSetChanged(); // Refresh the list once item is added
+                    });
+        }
     }
 
 
@@ -92,7 +139,7 @@ public class FloorEquipmentSanitisationFragment extends Fragment {
         if(countDownTimer != null){
             countDownTimer.cancel();
         }
-        countDownTimer= new CountDownTimer(100000, 1000){
+        countDownTimer= new CountDownTimer(14400000, 1000){
             public void onTick(long millisUntilFinished){
                 NumberFormat format = new DecimalFormat("00");
                 timerText.setText("" + millisUntilFinished / 1000);
@@ -107,9 +154,48 @@ public class FloorEquipmentSanitisationFragment extends Fragment {
         }.start();
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        if (countDownTimer != null) {
+            countDownTimer.cancel(); // Stop the timer
+        }
+
+        Log.d("FloorEquipmentSanitisationFragment", "On Pause Called");
+        SharedPreferences preferences = getActivity().getSharedPreferences("saniTimePrefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+
+        String timeString = timerText.getText().toString();
+        if(timeString.equals("CHECK DUE")){
+            timeString = "00:00:00";
+        }
+        String[] timeComponent = timeString.split(":");
+
+        int hour = Integer.parseInt(timeComponent[0]);
+        int min = Integer.parseInt(timeComponent[1]);
+        int sec = Integer.parseInt(timeComponent[2]);
+
+        long millis = (hour * 3600000) + (min * 60000) + (sec * 1000);
+
+        editor.putLong("timeLeft", millis);
+        editor.putLong("timePaused", System.currentTimeMillis());
+
+        editor.apply();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 
     public void ResumeCountDown(){
-        SharedPreferences preferences = requireActivity().getSharedPreferences("TimerPrefs", Context.MODE_PRIVATE);
+        if (timerText == null) {
+            Log.e("ResumeCountDown", "Timer text is null, skipping resume");
+            return;
+        }
+
+        SharedPreferences preferences = requireActivity().getSharedPreferences("saniTimePrefs", Context.MODE_PRIVATE);
         long savedTime = preferences.getLong("timeLeft", 0);
         long timePaused = preferences.getLong("timePaused", 0);
         long timeSincePause = System.currentTimeMillis() - timePaused;
@@ -117,10 +203,9 @@ public class FloorEquipmentSanitisationFragment extends Fragment {
         long timeLeft = savedTime - timeSincePause;
 
         if(timeLeft > 0){
-            countDownTimer = new CountDownTimer(timeLeft ,3600000 ){
+            countDownTimer = new CountDownTimer(timeLeft , 1000){
                 public void onTick(long millisUntilFinished){
                     NumberFormat format = new DecimalFormat("00");
-                    timerText.setText("" + millisUntilFinished / 1000);
                     long hour = (millisUntilFinished / 3600000) % 24;
                     long min = (millisUntilFinished / 60000) % 60;
                     long sec = (millisUntilFinished / 1000) % 60;
@@ -130,7 +215,7 @@ public class FloorEquipmentSanitisationFragment extends Fragment {
                     timerText.setText("CHECK DUE");
                 }
             }.start();
-        }else{
+        } else {
             timerText.setText("00:00:00");
         }
     }

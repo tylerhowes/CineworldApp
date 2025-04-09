@@ -2,6 +2,7 @@ package DailyFloorSideNav.DailyFloorSubFragments;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -11,6 +12,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.cineworldapp.R;
+
+import java.util.Objects;
 
 
 public class ToiletCheckCompletionSubFragment extends Fragment {
@@ -36,12 +39,13 @@ public class ToiletCheckCompletionSubFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        editText = getView().findViewById(R.id.editText);
+        editText = requireView().findViewById(R.id.editText);
     }
 
     public String getEditTextData(){
-        return editText.getText().toString();
+        if (editText == null) return "NA";
+        return editText.getText().toString().isEmpty() ? "NA" : editText.getText().toString();
     }
 }

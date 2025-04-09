@@ -8,11 +8,41 @@ public class ToiletCheckDataModel implements Parcelable {
     String toiletCheckNumber;
     String toiletCheckTime;
     String staffInitials;
+    String mensCorrectiveActions;
+    String womensCorrectiveActions;
+    String disabledCorrectiveActions;
 
-    public ToiletCheckDataModel(String toiletCheckNumber, String toiletCheckTime, String staffInitials) {
+    public ToiletCheckDataModel(String toiletCheckNumber, String toiletCheckTime, String staffInitials, String mensCorrectiveActions, String womensCorrectiveActions, String disabledCorrectiveActions) {
         this.toiletCheckNumber = toiletCheckNumber;
         this.toiletCheckTime = toiletCheckTime;
         this.staffInitials = staffInitials;
+        this.mensCorrectiveActions = mensCorrectiveActions;
+        this.womensCorrectiveActions = womensCorrectiveActions;
+        this.disabledCorrectiveActions = disabledCorrectiveActions;
+    }
+
+    public String getMensCorrectiveActions(){
+        return mensCorrectiveActions;
+    }
+
+    public void setMensCorrectiveActions(String mensCorrectiveActions){
+        this.mensCorrectiveActions = mensCorrectiveActions;
+    }
+
+    public String getWomensCorrectiveActions(){
+        return womensCorrectiveActions;
+    }
+
+    public void setWomensCorrectiveActions(String womensCorrectiveActions){
+        this.mensCorrectiveActions = womensCorrectiveActions;
+    }
+
+    public String getDisabledCorrectiveActions(){
+        return mensCorrectiveActions;
+    }
+
+    public void setDisabledCorrectiveActions(String disabledCorrectiveActions){
+        this.disabledCorrectiveActions = disabledCorrectiveActions;
     }
 
     public String getToiletCheckNumber() {

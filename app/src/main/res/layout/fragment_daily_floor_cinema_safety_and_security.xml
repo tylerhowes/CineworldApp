@@ -4,10 +4,20 @@
     android:layout_height="match_parent"
     tools:context="DailyFloorSideNav.DailyFloorSubFragments.CinemaSafetyAndSecurityFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Cinema Safety Check Fragment" />
+
+        >
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewSafetyAndSecurity"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            />
+
+    </LinearLayout>
+
 
 </FrameLayout>

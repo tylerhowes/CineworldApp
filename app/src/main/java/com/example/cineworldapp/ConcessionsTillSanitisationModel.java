@@ -6,15 +6,25 @@ public class ConcessionsTillSanitisationModel {
     private String staffInitials;
     private String timeDue;
     private String areasToSanitise;
+    private String timeCompleted;
 
-    public ConcessionsTillSanitisationModel(boolean isSanitised, String staffInitials, String timeDue, String areasToSanitise) {
+    public ConcessionsTillSanitisationModel(boolean isSanitised, String staffInitials, String timeDue, String areasToSanitise, String timeCompleted) {
         this.isSanitised = isSanitised;
         this.staffInitials = staffInitials;
         this.timeDue = timeDue;
         this.areasToSanitise = areasToSanitise;
+        this.timeCompleted = timeCompleted;
     }
 
-    public boolean isSanitised() {
+    public void setTimeCompleted(String timeCompleted){
+        this.timeCompleted = timeCompleted;
+    }
+
+    public String getTimeCompleted(){
+        return timeCompleted;
+    }
+
+    public boolean getIsSanitised() {
         return isSanitised;
     }
 
@@ -39,7 +49,7 @@ public class ConcessionsTillSanitisationModel {
     }
 
     public String getTimeDue() {
-        return areasToSanitise;
+        return timeDue;
     }
 
     public void setAreasToSanitise(String areasToSanitise) {

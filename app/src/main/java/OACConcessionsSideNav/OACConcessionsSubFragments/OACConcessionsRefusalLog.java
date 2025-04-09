@@ -18,10 +18,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cineworldapp.AlcoholRefusalLogCardAdapter;
 import com.example.cineworldapp.AlcoholRefusalLogDataModel;
+import com.example.cineworldapp.CustomerAssistanceDataModel;
 import com.example.cineworldapp.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -88,6 +90,8 @@ public class OACConcessionsRefusalLog extends Fragment {
             }
         });
 
+        LoadAlcoholRefusalLogsFirebase();
+
         getActivity().getSupportFragmentManager().setFragmentResultListener("AlcoholRefusalCompleteKey", getViewLifecycleOwner(), new FragmentResultListener() {
             @Override
             public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
@@ -122,6 +126,36 @@ public class OACConcessionsRefusalLog extends Fragment {
                 // Save the new log to Firestore
                 saveLogToFirestore(logDataModel);
             }
+        });
+    }
+
+    private void LoadAlcoholRefusalLogsFirebase() {
+        String currentDate = new SimpleDateFormat("dd.MM.yyyy").format(new Date());
+
+        CollectionReference logsRef = db.collection("Documents")
+                .document(currentDate)
+                .collection("OAC Concessions")
+                .document("Alcohol Refusal Logs")
+                .collection("Logs");
+
+        logsRef.get().addOnSuccessListener(queryDocumentSnapshots -> {
+            alcoholRefusalLogDataModelArrayList.clear();
+            for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
+                AlcoholRefusalLogDataModel model = new AlcoholRefusalLogDataModel(
+                        doc.getString("nameOrDescription"),
+                        doc.getString("product"),
+                        doc.getString("time"),
+                        doc.getString("date"),
+                        doc.getString("reason"),
+                        doc.getString("staffInitials")
+
+                );
+                alcoholRefusalLogDataModelArrayList.add(model);
+            }
+            adapter.notifyDataSetChanged();
+            Log.d("CustomerAssistance", "Data loaded from Firestore.");
+        }).addOnFailureListener(e -> {
+            Log.e("CustomerAssistance", "Error loading data from Firestore", e);
         });
     }
 

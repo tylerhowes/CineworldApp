@@ -19,11 +19,15 @@ import com.example.cineworldapp.ConcessionsTillSanitisationModel;
 import com.example.cineworldapp.FloorEquipmentSanitisationAdapter;
 import com.example.cineworldapp.FloorEquipmentSanitisationModel;
 import com.example.cineworldapp.R;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class DailyConcessionsTillSanitisationFragment extends Fragment {
@@ -59,34 +63,72 @@ public class DailyConcessionsTillSanitisationFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_daily_concessions_till_sanitisation, container, false);
     }
 
+    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
-
-        SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
-
-        long currentTime = System.currentTimeMillis();
-        String currentTimeString = format.format(currentTime);
-
-
+        timerText = view.findViewById(R.id.timer);
+        ResumeCountDown();
 
         concessionsTillSanitisationModelList = new ArrayList<>();
-        concessionsTillSanitisationModelList.add(new ConcessionsTillSanitisationModel(false, "...", checkTimeList.get(0), areasToSanitise));
-        concessionsTillSanitisationModelList.add(new ConcessionsTillSanitisationModel(false, "...", checkTimeList.get(1), areasToSanitise));
-        concessionsTillSanitisationModelList.add(new ConcessionsTillSanitisationModel(false, "...", checkTimeList.get(2), areasToSanitise));
-        concessionsTillSanitisationModelList.add(new ConcessionsTillSanitisationModel(false, "...", checkTimeList.get(3), areasToSanitise));
-        concessionsTillSanitisationModelList.add(new ConcessionsTillSanitisationModel(false, "...", checkTimeList.get(4), areasToSanitise));
+        concessionsTillSanitisationAdapter = new ConcessionsTillSanitisationAdapter(getContext(), concessionsTillSanitisationModelList, this);
 
-
-        concessionsTillSanitisationAdapter = new ConcessionsTillSanitisationAdapter(getContext(), concessionsTillSanitisationModelList);
-        concessionsTillSanitisationAdapter.notifyDataSetChanged();
         RecyclerView recyclerView = view.findViewById(R.id.tillSanitisationRecyclerView);
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-
-        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(concessionsTillSanitisationAdapter);
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String currentDate = new SimpleDateFormat("dd.MM.yyyy").format(new Date());
+
+        for (String time : checkTimeList) {
+            String finalTime = time;
+
+            db.collection("Documents")
+                    .document(currentDate)
+                    .collection("Daily Concessions")
+                    .document("Till Sanitisation")
+                    .collection("Logs")
+                    .document(finalTime)
+                    .get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            // Load from Firestore
+                            boolean isSanitised = documentSnapshot.getBoolean("isSanitised") != null && documentSnapshot.getBoolean("isSanitised");
+                            String initials = documentSnapshot.getString("staffInitials");
+                            String timeCompleted = documentSnapshot.getString("timeCompleted");
+
+                            ConcessionsTillSanitisationModel model = new ConcessionsTillSanitisationModel(
+                                    isSanitised,
+                                    initials != null ? initials : "...",
+                                    finalTime,
+                                    areasToSanitise,
+                                    timeCompleted
+                            );
+                            concessionsTillSanitisationModelList.add(model);
+                        } else {
+                            // Create a default document in Firestore
+                            Map<String, Object> defaultData = new HashMap<>();
+                            defaultData.put("isSanitised", false);
+                            defaultData.put("staffInitials", "...");
+                            defaultData.put("timeDue", finalTime);
+                            defaultData.put("areasToSanitise", areasToSanitise);
+                            defaultData.put("timeCompleted", null);
+
+                            db.collection("Documents")
+                                    .document(currentDate)
+                                    .collection("Daily Concessions")
+                                    .document("Till Sanitisation")
+                                    .collection("Logs")
+                                    .document(finalTime)
+                                    .set(defaultData);
+
+                            // Add default model to list
+                            concessionsTillSanitisationModelList.add(new ConcessionsTillSanitisationModel(false, "...", finalTime, areasToSanitise, null));
+                        }
+
+                        concessionsTillSanitisationAdapter.notifyDataSetChanged(); // Refresh the list once item is added
+                    });
+        }
     }
 
 

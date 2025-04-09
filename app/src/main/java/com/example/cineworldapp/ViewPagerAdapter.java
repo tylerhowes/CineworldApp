@@ -22,6 +22,10 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         fragmentList.add(fragment);
         fragmentTitleList.add(title);
     }
+    public
+    Fragment getRegisteredFragment(int position) {
+        return fragmentList.get(position);
+    }
 
     @NonNull @Override public Fragment getItem(int position){
         return fragmentList.get(position);
