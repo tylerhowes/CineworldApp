@@ -76,6 +76,7 @@ public class ScreenCardAdapter extends RecyclerView.Adapter<ScreenCardAdapter.Vi
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
         Date date = Calendar.getInstance().getTime();
         String currentDate = dateFormat.format(date);
+
         db.collection("Documents")
                 .document(currentDate)
                 .collection("Daily Floor")

@@ -81,14 +81,13 @@ public class DailyConcessionsTillSanitisationFragment extends Fragment {
         String currentDate = new SimpleDateFormat("dd.MM.yyyy").format(new Date());
 
         for (String time : checkTimeList) {
-            String finalTime = time;
 
             db.collection("Documents")
                     .document(currentDate)
                     .collection("Daily Concessions")
                     .document("Till Sanitisation")
                     .collection("Logs")
-                    .document(finalTime)
+                    .document(time)
                     .get()
                     .addOnSuccessListener(documentSnapshot -> {
                         if (documentSnapshot.exists()) {
@@ -100,7 +99,7 @@ public class DailyConcessionsTillSanitisationFragment extends Fragment {
                             ConcessionsTillSanitisationModel model = new ConcessionsTillSanitisationModel(
                                     isSanitised,
                                     initials != null ? initials : "...",
-                                    finalTime,
+                                    time,
                                     areasToSanitise,
                                     timeCompleted
                             );
@@ -110,7 +109,7 @@ public class DailyConcessionsTillSanitisationFragment extends Fragment {
                             Map<String, Object> defaultData = new HashMap<>();
                             defaultData.put("isSanitised", false);
                             defaultData.put("staffInitials", "...");
-                            defaultData.put("timeDue", finalTime);
+                            defaultData.put("timeDue", time);
                             defaultData.put("areasToSanitise", areasToSanitise);
                             defaultData.put("timeCompleted", null);
 
@@ -119,11 +118,11 @@ public class DailyConcessionsTillSanitisationFragment extends Fragment {
                                     .collection("Daily Concessions")
                                     .document("Till Sanitisation")
                                     .collection("Logs")
-                                    .document(finalTime)
+                                    .document(time)
                                     .set(defaultData);
 
                             // Add default model to list
-                            concessionsTillSanitisationModelList.add(new ConcessionsTillSanitisationModel(false, "...", finalTime, areasToSanitise, null));
+                            concessionsTillSanitisationModelList.add(new ConcessionsTillSanitisationModel(false, "...", time, areasToSanitise, null));
                         }
 
                         concessionsTillSanitisationAdapter.notifyDataSetChanged(); // Refresh the list once item is added

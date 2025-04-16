@@ -7,17 +7,26 @@ public class ConcessionsEquipmentSanitisationModel {
     private String staffInitials;
     private String timeDue;
     private String areasToSanitise;
-    private String closeAreasToSanitise;
+    private String timeCompleted;
 
-    public ConcessionsEquipmentSanitisationModel(boolean isSanitised, String staffInitials, String timeDue, String areasToSanitise, String closeAreasToSanitise) {
+
+    public ConcessionsEquipmentSanitisationModel(boolean isSanitised, String staffInitials, String timeDue, String areasToSanitise, String timeCompleted) {
         this.isSanitised = isSanitised;
         this.staffInitials = staffInitials;
         this.timeDue = timeDue;
         this.areasToSanitise = areasToSanitise;
-        this.closeAreasToSanitise = closeAreasToSanitise;
+        this.timeCompleted = timeCompleted;
     }
 
-    public boolean isSanitised() {
+    public void setTimeCompleted(String timeCompleted){
+        this.timeCompleted = timeCompleted;
+    }
+
+    public String getTimeCompleted(){
+        return timeCompleted;
+    }
+
+    public boolean getIsSanitised() {
         return isSanitised;
     }
 
@@ -42,7 +51,7 @@ public class ConcessionsEquipmentSanitisationModel {
     }
 
     public String getTimeDue() {
-        return areasToSanitise;
+        return timeDue;
     }
 
     public void setAreasToSanitise(String areasToSanitise) {
@@ -51,14 +60,6 @@ public class ConcessionsEquipmentSanitisationModel {
 
     public String getAreasToSanitise() {
         return areasToSanitise;
-    }
-
-    public void setCloseAreasToSanitise(String closeAreasToSanitise) {
-        this.closeAreasToSanitise = closeAreasToSanitise;
-    }
-
-    public String getCloseAreasToSanitise() {
-        return closeAreasToSanitise;
     }
 
 }
