@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
                                             });
                                 }
                                 else{
+                                    Toast.makeText(MainActivity.this, "Login not found", Toast.LENGTH_SHORT).show();
                                     Log.e("Login", "Login not found or Error: " + task.getException());
                                 }
                             });

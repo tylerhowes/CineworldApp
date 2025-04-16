@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.cineworldapp.R;
 import com.example.cineworldapp.ViewPagerAdapter;
@@ -44,6 +46,7 @@ public class ToiletCheckCompletionFragment extends Fragment {
         viewPagerAdapter.add(ToiletCheckCompletionSubFragment.newInstance("Disabled"), "Disabled");
 
         viewPager.setAdapter(viewPagerAdapter);
+        viewPager.setOffscreenPageLimit(3);
 
         tabLayout = view.findViewById(R.id.tabLayout);
         tabLayout.setupWithViewPager(viewPager);
@@ -57,19 +60,25 @@ public class ToiletCheckCompletionFragment extends Fragment {
                 String womensData = getSubFragEditTextData(1);
                 String disabledData = getSubFragEditTextData(2);
 
-                Bundle result = new Bundle();
-                result.putString("mensData", mensData);
-                result.putString("womensData", womensData);
-                result.putString("disabledData", disabledData);
-                getParentFragmentManager().setFragmentResult("CheckCompleteKey", result);
-                getActivity().getSupportFragmentManager().popBackStack();
-                // Send data back to previous activity
+                if(!mensData.isEmpty() && !womensData.isEmpty() && !disabledData.isEmpty()){
+                    Bundle result = new Bundle();
+                    result.putString("mensData", mensData);
+                    result.putString("womensData", womensData);
+                    result.putString("disabledData", disabledData);
+                    getParentFragmentManager().setFragmentResult("CheckCompleteKey", result);
+                    getActivity().getSupportFragmentManager().popBackStack();
+                    // Send data back to previous activity
+                }
+                else{
+                    Toast.makeText(getContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         return view;
     }
 
     private String getSubFragEditTextData(int position){
-        return ((ToiletCheckCompletionSubFragment) viewPagerAdapter.getItem(position)).getEditTextData();
+        return ((ToiletCheckCompletionSubFragment) viewPagerAdapter.getRegisteredFragment(position)).getEditTextData();
     }
+
 }

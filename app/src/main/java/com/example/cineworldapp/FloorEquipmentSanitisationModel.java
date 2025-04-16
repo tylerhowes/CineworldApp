@@ -6,12 +6,22 @@ public class FloorEquipmentSanitisationModel {
     private String staffInitials;
     private String timeDue;
     private String areasToSanitise;
+    private String timeCompleted;
 
-    public FloorEquipmentSanitisationModel(boolean isSanitised, String staffInitials, String timeDue, String areasToSanitise) {
+    public FloorEquipmentSanitisationModel(boolean isSanitised, String staffInitials, String timeDue, String areasToSanitise, String timeCompleted) {
         this.isSanitised = isSanitised;
         this.staffInitials = staffInitials;
         this.timeDue = timeDue;
         this.areasToSanitise = areasToSanitise;
+        this.timeCompleted = timeCompleted;
+    }
+
+    public void setTimeCompleted(String timeCompleted){
+        this.timeCompleted = timeCompleted;
+    }
+
+    public String getTimeCompleted(){
+        return timeCompleted;
     }
 
     public boolean isSanitised() {
@@ -20,6 +30,14 @@ public class FloorEquipmentSanitisationModel {
 
     public void setSanitised(boolean sanitised) {
         isSanitised = sanitised;
+    }
+
+    public void setIsSanitised(boolean isSanitised){
+        this.isSanitised = isSanitised;
+    }
+
+    public boolean getIsSanitised(){
+        return isSanitised;
     }
 
     public String getStaffInitials() {
@@ -39,7 +57,7 @@ public class FloorEquipmentSanitisationModel {
     }
 
     public String getTimeDue() {
-        return areasToSanitise;
+        return timeDue;
     }
 
     public void setAreasToSanitise(String areasToSanitise) {

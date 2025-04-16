@@ -23,9 +23,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.cineworldapp.AlcoholRefusalLogDataModel;
 import com.example.cineworldapp.R;
 import com.example.cineworldapp.ToiletCheckCardAdapter;
 import com.example.cineworldapp.ToiletCheckDataModel;
+import com.google.firebase.Firebase;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -35,8 +40,10 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 
@@ -48,6 +55,7 @@ public class ToiletCheckFragment extends Fragment {
     ArrayList<ToiletCheckDataModel> toiletCheckDataList = new ArrayList<>();
     ToiletCheckCardAdapter adapter;
 
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -60,30 +68,11 @@ public class ToiletCheckFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_daily_floor_toilet_check, container, false);
     }
 
-
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
-
-        Gson gson = new Gson();
-        SharedPreferences sharedPrefs = getActivity().getSharedPreferences("TimerPrefs", Context.MODE_PRIVATE);
-        String json = sharedPrefs.getString("toiletCheckDataListJson", "");
-        Type type = new TypeToken<ArrayList<ToiletCheckDataModel>>(){}.getType();
-        if(savedInstanceState != null){
-            toiletCheckDataList = savedInstanceState.getParcelableArrayList("toiletCheckDataList");
-        } else {
-            toiletCheckDataList = gson.fromJson(json, type);
-            if(toiletCheckDataList == null){
-                toiletCheckDataList = new ArrayList<>();
-            }
-        }
-
-
-
-
-
+        LoadToiletChecks();
 
         Log.d("ToiletCheckFragment", "On View Created Called");
         Log.d("ToiletCheckFragment", "Size of Check Array in onCreateView: " + toiletCheckDataList.size());
@@ -106,7 +95,10 @@ public class ToiletCheckFragment extends Fragment {
                 SimpleDateFormat format= new SimpleDateFormat("HH:mm");
                 String actualTime = format.format(currentTime);
 
-                toiletCheckDataList.add(new ToiletCheckDataModel(""+ (toiletCheckDataList.size()+1), actualTime, "TH"));
+                ToiletCheckDataModel model = new ToiletCheckDataModel(""+ (toiletCheckDataList.size()+1), actualTime, "TH", mensData, womensData, disabledData);
+
+                SaveLogToFirestore(model);
+                toiletCheckDataList.add(model);
                 Log.d("ToiletCheckFragment", "Size of Array in onFrag result: " + toiletCheckDataList.size());
 
                 adapter.notifyItemInserted(toiletCheckDataList.size() - 1);
@@ -127,7 +119,6 @@ public class ToiletCheckFragment extends Fragment {
         newCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 final FragmentTransaction fragTransaction = fragmentManager.beginTransaction();
                 fragTransaction.add(R.id.dailyFloorFragment, new ToiletCheckCompletionFragment());
@@ -146,7 +137,7 @@ public class ToiletCheckFragment extends Fragment {
         }
 
         Log.d("ToiletCheckFragment", "On Pause Called");
-        SharedPreferences preferences = getActivity().getSharedPreferences("TimerPrefs", Context.MODE_PRIVATE);
+        SharedPreferences preferences = getActivity().getSharedPreferences("toiletTimerPrefs", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
 
         String timeString = timerText.getText().toString();
@@ -163,10 +154,6 @@ public class ToiletCheckFragment extends Fragment {
 
         editor.putLong("timeLeft", millis);
         editor.putLong("timePaused", System.currentTimeMillis());
-
-        Gson gson = new Gson();
-        String json = gson.toJson(toiletCheckDataList);
-        editor.putString("toiletCheckDataListJson", json);
 
         editor.apply();
     }
@@ -198,7 +185,7 @@ public class ToiletCheckFragment extends Fragment {
 
 
     public void ResumeCountDown(){
-        SharedPreferences preferences = requireActivity().getSharedPreferences("TimerPrefs", Context.MODE_PRIVATE);
+        SharedPreferences preferences = requireActivity().getSharedPreferences("toiletTimerPrefs", Context.MODE_PRIVATE);
         long savedTime = preferences.getLong("timeLeft", 0);
         long timePaused = preferences.getLong("timePaused", 0);
 
@@ -217,7 +204,6 @@ public class ToiletCheckFragment extends Fragment {
 
                         timerText.setText(format.format(hours) + ":" + format.format(minutes) + ":" + format.format(seconds));
                     }
-
                     @Override
                     public void onFinish() {
                         timerText.setText("CHECK DUE");
@@ -227,5 +213,63 @@ public class ToiletCheckFragment extends Fragment {
                 timerText.setText("CHECK DUE");
             }
         }
+    }
+
+    private void LoadToiletChecks() {
+        String currentDate = new SimpleDateFormat("dd.MM.yyyy").format(new Date());
+
+        CollectionReference logsRef = db.collection("Documents")
+                .document(currentDate)
+                .collection("Daily Floor")
+                .document("Toilet Checks")
+                .collection("Logs");
+
+        logsRef.get().addOnSuccessListener(queryDocumentSnapshots -> {
+            toiletCheckDataList.clear();
+            for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
+                ToiletCheckDataModel model = new ToiletCheckDataModel(
+                        doc.getString("toiletCheckNumber"),
+                        doc.getString("toiletCheckTime"),
+                        doc.getString("staffInitials"),
+                        doc.getString("mensCorrectiveActions"),
+                        doc.getString("womensCorrectiveActions"),
+                        doc.getString("disabledCorrectiveActions")
+                );
+                toiletCheckDataList.add(model);
+            }
+            adapter.notifyDataSetChanged();
+            Log.d("ToiletCheckFragment", "Data loaded from Firestore.");
+        }).addOnFailureListener(e -> {
+            Log.e("ToiletCheckFragment", "Error loading data from Firestore", e);
+        });
+    }
+
+    private void SaveLogToFirestore(ToiletCheckDataModel model) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String currentDate = new SimpleDateFormat("dd.MM.yyyy").format(new Date());
+
+        // Prepare the data to be saved as a map
+        // Create a map of log data to be stored in Firestore
+        Map<String, Object> dataMap = new HashMap<>();
+        dataMap.put("toiletCheckNumber", model.getToiletCheckNumber());
+        dataMap.put("toiletCheckTime", model.getToiletCheckTime());
+        dataMap.put("staffInitials", model.getStaffInitials());
+        dataMap.put("mensCorrectiveActions", model.getMensCorrectiveActions());
+        dataMap.put("womensCorrectiveActions", model.getWomensCorrectiveActions());
+        dataMap.put("disabledCorrectiveActions", model.getDisabledCorrectiveActions());
+
+        // Firestore path to store the log
+        db.collection("Documents")
+                .document(currentDate)
+                .collection("Daily Floor")
+                .document("Toilet Checks")
+                .collection("Logs")
+                .add(dataMap)
+                .addOnSuccessListener(documentReference -> {
+                    Log.d("AlcoholRefusalLog", "Log added to Firestore.");
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("AlcoholRefusalLog", "Error writing log to Firestore", e);
+                });
     }
 }

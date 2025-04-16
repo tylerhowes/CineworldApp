@@ -1,4 +1,4 @@
-package com.example.cineworldapp;
+package OACConcessionsSideNav.OACConcessionsSubFragments;
 
 import android.os.Bundle;
 
@@ -10,10 +10,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.Toast;
+
+import com.example.cineworldapp.R;
 
 //THIS IS WHERE I LEFT OFF
 public class FragmentAlcoholRefusalLogCompletion extends Fragment {
@@ -50,17 +51,22 @@ public class FragmentAlcoholRefusalLogCompletion extends Fragment {
         completeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 String nameDescription = nameDescriptionET.getText().toString();
                 String product = productET.getText().toString();
                 String reason = reasonET.getText().toString();
-
-                Bundle result = new Bundle();
-                result.putString("customerNameDescription", nameDescription);
-                result.putString("product", product);
-                result.putString("reason", reason);
-                Log.d("AlcoholRefusalCompletion", "Refusal Log value sent value");
-                getParentFragmentManager().setFragmentResult("AlcoholRefusalCompleteKey", result);
-                getActivity().getSupportFragmentManager().popBackStack();
+                if(nameDescription.isEmpty() && product.isEmpty() && reason.isEmpty()){
+                    Toast.makeText(getContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Bundle result = new Bundle();
+                    result.putString("customerNameDescription", nameDescription);
+                    result.putString("product", product);
+                    result.putString("reason", reason);
+                    Log.d("AlcoholRefusalCompletion", "Refusal Log value sent value");
+                    getParentFragmentManager().setFragmentResult("AlcoholRefusalCompleteKey", result);
+                    getActivity().getSupportFragmentManager().popBackStack();
+                }
             }
         });
     }

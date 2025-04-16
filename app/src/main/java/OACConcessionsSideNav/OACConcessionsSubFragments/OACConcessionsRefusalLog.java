@@ -1,8 +1,11 @@
 package OACConcessionsSideNav.OACConcessionsSubFragments;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,25 +16,22 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-
 import com.example.cineworldapp.AlcoholRefusalLogCardAdapter;
 import com.example.cineworldapp.AlcoholRefusalLogDataModel;
-import com.example.cineworldapp.FragmentAlcoholRefusalLogCompletion;
+import com.example.cineworldapp.CustomerAssistanceDataModel;
 import com.example.cineworldapp.R;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
-
+import java.util.HashMap;
+import java.util.Map;
 
 public class OACConcessionsRefusalLog extends Fragment {
 
@@ -41,6 +41,10 @@ public class OACConcessionsRefusalLog extends Fragment {
     AlcoholRefusalLogCardAdapter adapter;
     RecyclerView alcoholRefusalLogRV;
 
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseAuth auth = FirebaseAuth.getInstance();
+    String currentStaffInitials;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +53,6 @@ public class OACConcessionsRefusalLog extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_oac_floor_customer_assistance, container, false);
     }
 
@@ -57,18 +60,16 @@ public class OACConcessionsRefusalLog extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Gson gson = new Gson();
-        SharedPreferences sharedPrefs = getActivity().getSharedPreferences("alcoholRefusalFragPrefs", Context.MODE_PRIVATE);
-        String json = sharedPrefs.getString("alcoholRefusalDataJson", "");
-        Type type = new TypeToken<ArrayList<AlcoholRefusalLogDataModel>>(){}.getType();
-        if(savedInstanceState != null){
-            alcoholRefusalLogDataModelArrayList = savedInstanceState.getParcelableArrayList("alcoholRefusalDataJson");
-        } else {
-            alcoholRefusalLogDataModelArrayList = gson.fromJson(json, type);
-            if(alcoholRefusalLogDataModelArrayList == null){
-                alcoholRefusalLogDataModelArrayList = new ArrayList<>();
+        String staffID = auth.getCurrentUser().getUid();
+        db.collection("users").document(staffID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot snapshot = task.getResult();
+                currentStaffInitials = snapshot.getString("initials");
             }
-        }
+        });
+
+        alcoholRefusalLogDataModelArrayList = new ArrayList<>();
 
         alcoholRefusalLogRV = view.findViewById(R.id.recycleView);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -81,17 +82,15 @@ public class OACConcessionsRefusalLog extends Fragment {
         addLogButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 final FragmentTransaction fragTransaction = fragmentManager.beginTransaction();
                 fragTransaction.add(R.id.oacConcessions, new FragmentAlcoholRefusalLogCompletion());
                 fragTransaction.addToBackStack(null);
                 fragTransaction.commit();
-
             }
         });
 
-
+        LoadAlcoholRefusalLogsFirebase();
 
         getActivity().getSupportFragmentManager().setFragmentResultListener("AlcoholRefusalCompleteKey", getViewLifecycleOwner(), new FragmentResultListener() {
             @Override
@@ -99,36 +98,93 @@ public class OACConcessionsRefusalLog extends Fragment {
 
                 Log.d("OACConcessionsRefusalLog", "Alcohol Refusal received result");
 
-                String customerNameDescription= result.getString("customerNameDescription");
+                String customerNameDescription = result.getString("customerNameDescription");
                 String product = result.getString("product");
-                String reason= result.getString("reason");
+                String reason = result.getString("reason");
 
                 SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
                 String time = timeFormat.format(new Date());
 
-                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
                 String date = format.format(new Date());
 
-                alcoholRefusalLogDataModelArrayList.add(new AlcoholRefusalLogDataModel( customerNameDescription, product, time, date, reason));
+                // Create a new AlcoholRefusalLogDataModel object
+                AlcoholRefusalLogDataModel logDataModel = new AlcoholRefusalLogDataModel(
+                        customerNameDescription,
+                        product,
+                        time,
+                        date,
+                        reason,
+                        currentStaffInitials);
 
+                // Add the new log to the local list
+                alcoholRefusalLogDataModelArrayList.add(logDataModel);
+
+                // Notify the adapter to refresh the RecyclerView
                 adapter.notifyItemInserted(alcoholRefusalLogDataModelArrayList.size() - 1);
 
+                // Save the new log to Firestore
+                saveLogToFirestore(logDataModel);
             }
         });
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
+    private void LoadAlcoholRefusalLogsFirebase() {
+        String currentDate = new SimpleDateFormat("dd.MM.yyyy").format(new Date());
 
-        Log.d("OACConcessionsRefusalLog", "On Pause Called");
-        SharedPreferences preferences = getActivity().getSharedPreferences("alcoholRefusalFragPrefs", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
+        CollectionReference logsRef = db.collection("Documents")
+                .document(currentDate)
+                .collection("OAC Concessions")
+                .document("Alcohol Refusal Logs")
+                .collection("Logs");
 
-        Gson gson = new Gson();
-        String json = gson.toJson(alcoholRefusalLogDataModelArrayList);
-        editor.putString("alcoholRefusalDataJson", json);
+        logsRef.get().addOnSuccessListener(queryDocumentSnapshots -> {
+            alcoholRefusalLogDataModelArrayList.clear();
+            for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
+                AlcoholRefusalLogDataModel model = new AlcoholRefusalLogDataModel(
+                        doc.getString("nameOrDescription"),
+                        doc.getString("product"),
+                        doc.getString("time"),
+                        doc.getString("date"),
+                        doc.getString("reason"),
+                        doc.getString("staffInitials")
 
-        editor.apply();
+                );
+                alcoholRefusalLogDataModelArrayList.add(model);
+            }
+            adapter.notifyDataSetChanged();
+            Log.d("CustomerAssistance", "Data loaded from Firestore.");
+        }).addOnFailureListener(e -> {
+            Log.e("CustomerAssistance", "Error loading data from Firestore", e);
+        });
+    }
+
+    private void saveLogToFirestore(AlcoholRefusalLogDataModel model) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String currentDate = new SimpleDateFormat("dd.MM.yyyy").format(new Date());
+
+        // Prepare the data to be saved as a map
+        // Create a map of log data to be stored in Firestore
+        Map<String, Object> dataMap = new HashMap<>();
+        dataMap.put("nameOrDescription", model.getNameOrDescription());
+        dataMap.put("product", model.getProduct());
+        dataMap.put("time", model.getTime());
+        dataMap.put("date", model.getDate());
+        dataMap.put("reason", model.getReason());
+        dataMap.put("staffInitials", model.getStaffInitials());
+
+        // Firestore path to store the log
+        db.collection("Documents")
+                .document(currentDate)
+                .collection("OAC Concessions")
+                .document("Alcohol Refusal Logs")
+                .collection("Logs")
+                .add(dataMap)
+                .addOnSuccessListener(documentReference -> {
+                    Log.d("AlcoholRefusalLog", "Log added to Firestore.");
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("AlcoholRefusalLog", "Error writing log to Firestore", e);
+                });
     }
 }
