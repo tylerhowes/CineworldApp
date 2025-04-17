@@ -85,7 +85,7 @@ public class HotDogCookingFragment extends Fragment {
                     recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                     recyclerView.setAdapter(concessionsHotdogBatchAdapter);
 
-                    LoadData(); // Now it's safe to load data and bind it to adapter
+                    LoadData();
                 });
 
 
