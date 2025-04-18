@@ -84,14 +84,13 @@ public class FloorEquipmentSanitisationFragment extends Fragment {
         String currentDate = new SimpleDateFormat("dd.MM.yyyy").format(new Date());
 
         for (String time : checkTimeList) {
-            String finalTime = time;
 
             db.collection("Documents")
                     .document(currentDate)
                     .collection("Daily Floor")
                     .document("Equipment Sanitisation")
                     .collection("Logs")
-                    .document(finalTime)
+                    .document(time)
                     .get()
                     .addOnSuccessListener(documentSnapshot -> {
                         if (documentSnapshot.exists()) {
@@ -103,7 +102,7 @@ public class FloorEquipmentSanitisationFragment extends Fragment {
                             FloorEquipmentSanitisationModel model = new FloorEquipmentSanitisationModel(
                                     isSanitised,
                                     initials != null ? initials : "...",
-                                    finalTime,
+                                    time,
                                     areasToSanitise,
                                     timeCompleted
                             );
@@ -113,7 +112,7 @@ public class FloorEquipmentSanitisationFragment extends Fragment {
                             Map<String, Object> defaultData = new HashMap<>();
                             defaultData.put("isSanitised", false);
                             defaultData.put("staffInitials", "...");
-                            defaultData.put("timeDue", finalTime);
+                            defaultData.put("timeDue", time);
                             defaultData.put("areasToSanitise", areasToSanitise);
                             defaultData.put("timeCompleted", null);
 
@@ -122,11 +121,11 @@ public class FloorEquipmentSanitisationFragment extends Fragment {
                                     .collection("Daily Floor")
                                     .document("Equipment Sanitisation")
                                     .collection("Logs")
-                                    .document(finalTime)
+                                    .document(time)
                                     .set(defaultData);
 
                             // Add default model to list
-                            floorEquipmentSanitisationList.add(new FloorEquipmentSanitisationModel(false, "...", finalTime, areasToSanitise, null));
+                            floorEquipmentSanitisationList.add(new FloorEquipmentSanitisationModel(false, "...", time, areasToSanitise, null));
                         }
 
                         floorEquipmentSanitisationAdapter.notifyDataSetChanged(); // Refresh the list once item is added
