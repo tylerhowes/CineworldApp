@@ -6,9 +6,6 @@
     <group
         android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_general"
-            android:title="General"/>
-        <item
             android:id="@+id/nav_oac_concessions"
             android:title="OAC Concessions"/>
         <item

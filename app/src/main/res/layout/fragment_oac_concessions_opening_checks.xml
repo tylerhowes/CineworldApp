@@ -5,6 +5,10 @@
     android:layout_height="match_parent"
     tools:context="OACFloorSideNav.OACFloorSubFragments.FloorOpeningChecksFragment">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -391,5 +395,5 @@
             android:backgroundTint="@color/red"
             android:layout_marginTop="20dp"/>
     </LinearLayout>
-
+    </ScrollView>
 </FrameLayout>

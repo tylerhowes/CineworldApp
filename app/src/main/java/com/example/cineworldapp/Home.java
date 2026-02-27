@@ -19,7 +19,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -27,7 +26,6 @@ import DailyConcessionsSideNav.DailyConcessionsFragment;
 import DailyFloorSideNav.DailyFloorFragment;
 import OACConcessionsSideNav.OACConcessionsFragment;
 import OACFloorSideNav.OACFloorFragment;
-import SideNav.generalFragment;
 
 public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -80,17 +78,12 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 userEmail.setText(docRef.get("firstName").toString() + docRef.get("lastName").toString());
             }
         });
-        // Update the text
-        userName.setText("John Doe");
-        userEmail.setText("john.doe@example.com");
-
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new OACConcessionsFragment()).commit();
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item){
-        if(item.getItemId() == R.id.nav_general)
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new generalFragment()).commit();
-        else if(item.getItemId() == R.id.nav_oac_concessions)
+        if(item.getItemId() == R.id.nav_oac_concessions)
             getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new OACConcessionsFragment()).commit();
         else if(item.getItemId() == R.id.nav_daily_concessions)
             getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new DailyConcessionsFragment()).commit();
